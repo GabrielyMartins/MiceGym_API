@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|c:\\users\\2022102020080\\source\\repos\\apiequipamento\\apiequipamento\\controllers\\equipamentocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|solutionrelative:apiequipamento\\controllers\\equipamentocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|c:\\users\\2022102020080\\source\\repos\\apiequipamento\\apiequipamento\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|solutionrelative:apiequipamento\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|c:\\users\\2022102020080\\source\\repos\\apiequipamento\\apiequipamento\\equipamento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|solutionrelative:apiequipamento\\equipamento.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|c:\\users\\2022102020080\\source\\repos\\apiequipamento\\apiequipamento\\controllers\\equipamentodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CB312EE3-57CC-42A3-A928-9DCA1F0B9058}|ApiEquipamento\\ApiEquipamento.csproj|solutionrelative:apiequipamento\\controllers\\equipamentodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EquipamentoController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Controllers\\EquipamentoController.cs",
+              "RelativeDocumentMoniker": "ApiEquipamento\\Controllers\\EquipamentoController.cs",
+              "ToolTip": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Controllers\\EquipamentoController.cs",
+              "RelativeToolTip": "ApiEquipamento\\Controllers\\EquipamentoController.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAqwH4AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-09T18:30:46.191Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Program.cs",
+              "RelativeDocumentMoniker": "ApiEquipamento\\Program.cs",
+              "ToolTip": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Program.cs",
+              "RelativeToolTip": "ApiEquipamento\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-09T18:29:59.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Equipamento.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Equipamento.cs",
+              "RelativeDocumentMoniker": "ApiEquipamento\\Equipamento.cs",
+              "ToolTip": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Equipamento.cs",
+              "RelativeToolTip": "ApiEquipamento\\Equipamento.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-09T18:29:26.929Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EquipamentoDTO.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Controllers\\EquipamentoDTO.cs",
+              "RelativeDocumentMoniker": "ApiEquipamento\\Controllers\\EquipamentoDTO.cs",
+              "ToolTip": "C:\\Users\\2022102020080\\source\\repos\\ApiEquipamento\\ApiEquipamento\\Controllers\\EquipamentoDTO.cs",
+              "RelativeToolTip": "ApiEquipamento\\Controllers\\EquipamentoDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-09T18:24:59.417Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
