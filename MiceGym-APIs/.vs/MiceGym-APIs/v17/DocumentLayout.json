@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\equipamentocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\equipamentocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\treinocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\treinocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\clientecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\clientecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\produtocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\produtocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\fornecedorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\fornecedorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|c:\\users\\2022102020078\\source\\repos\\micegym-apis\\micegym-apis\\controllers\\funcionariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E93A8D18-4151-4FCA-8AD5-3286BFAAEEEC}|MiceGym-APIs\\MiceGym-APIs.csproj|solutionrelative:micegym-apis\\controllers\\funcionariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TreinoController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\TreinoController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\TreinoController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\TreinoController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\TreinoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T21:03:41.953Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProdutoController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\ProdutoController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\ProdutoController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\ProdutoController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\ProdutoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:58:50.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EquipamentoController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\EquipamentoController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\EquipamentoController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\EquipamentoController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\EquipamentoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:54:03.394Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FornecedorController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\FornecedorController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\FornecedorController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\FornecedorController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\FornecedorController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:47:04.837Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FuncionarioController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\FuncionarioController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\FuncionarioController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\FuncionarioController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\FuncionarioController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:40:51.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ClienteController.cs",
+              "DocumentMoniker": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\ClienteController.cs",
+              "RelativeDocumentMoniker": "MiceGym-APIs\\Controllers\\ClienteController.cs",
+              "ToolTip": "C:\\Users\\2022102020078\\source\\repos\\MiceGym-APIs\\MiceGym-APIs\\Controllers\\ClienteController.cs",
+              "RelativeToolTip": "MiceGym-APIs\\Controllers\\ClienteController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:30:25.857Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+@MiceGym_APIs_HostAddress = http://localhost:5039
+
+GET {{MiceGym_APIs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
