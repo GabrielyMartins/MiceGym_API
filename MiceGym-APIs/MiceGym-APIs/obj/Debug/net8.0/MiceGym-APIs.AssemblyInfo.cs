@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiceGym-APIs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70f13cfef610497beb1be778b5e870abebe9ec62")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiceGym-APIs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiceGym-APIs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
