@@ -1,6 +1,24 @@
 CREATE DATABASE mice_gym_bd;
 USE mice_gym_bd;
 
+CREATE TABLE Usuario(
+id_user INT PRIMARY KEY AUTO_INCREMENT,
+nome_user VARCHAR(100),
+senha_user VARCHAR(100),
+email_user VARCHAR(100),
+cpf_user VARCHAR(100),
+telefone_user VARCHAR(100)
+);
+
+INSERT INTO Usuario VALUES(null, 'admin', 'admin', 'admin', null, null);
+
+CREATE TABLE Academia(
+id_aca INT PRIMARY KEY AUTO_INCREMENT,
+nome_aca VARCHAR(100),
+endereco_aca VARCHAR(100),
+numero_aca VARCHAR(100)
+);
+
 CREATE TABLE Fornecedor(
 id_forn INT PRIMARY KEY AUTO_INCREMENT,
 nomefantasia_forn VARCHAR(100),
