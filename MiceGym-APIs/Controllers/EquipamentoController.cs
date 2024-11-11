@@ -17,7 +17,7 @@ namespace MiceGym_APIs.Controllers
             _equipamentoDAO = new EquipamentoDAO();
         }
 
-        // Método para listar todos os equipamentos
+       
         [HttpGet]
         public IActionResult Get()
         {
@@ -25,7 +25,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(equipamentos);
         }
 
-        // Método para buscar um equipamento pelo código
+        
         [HttpGet("{codigo}")]
         public IActionResult GetByCodigo(string codigo)
         {
@@ -39,7 +39,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(equipamento);
         }
 
-        // Método para adicionar um novo equipamento
+        
         [HttpPost]
         public IActionResult Post([FromBody] EquipamentoDTO dto)
         {
@@ -63,7 +63,7 @@ namespace MiceGym_APIs.Controllers
             return CreatedAtAction(nameof(GetByCodigo), new { codigo = equipamento.Codigo }, equipamento);
         }
 
-        // Método para atualizar um equipamento existente pelo código
+       
         [HttpPut("{codigo}")]
         public IActionResult Put(string codigo, [FromBody] EquipamentoDTO dto)
         {
@@ -78,7 +78,7 @@ namespace MiceGym_APIs.Controllers
             {
                 Nome = dto.Nome ?? equipamentoExistente.Nome,
                 Descricao = dto.Descricao ?? equipamentoExistente.Descricao,
-                Codigo = codigo,  // O código não pode ser alterado
+                Codigo = codigo,  
                 Quantidade = dto.Quantidade ?? equipamentoExistente.Quantidade,
                 Valor = dto.Valor ?? equipamentoExistente.Valor,
                 Fornecedor = dto.Fornecedor ?? equipamentoExistente.Fornecedor
@@ -89,7 +89,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(equipamentoAtualizado);
         }
 
-        // Método para deletar um equipamento pelo código
+        
         [HttpDelete("{codigo}")]
         public IActionResult Delete(string codigo)
         {

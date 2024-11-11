@@ -16,7 +16,7 @@ namespace MiceGym_APIs.Controllers
             _treinoDAO = new TreinoDAO();
         }
 
-        // Método para listar todos os treinos
+       
         [HttpGet("Listar")]
         public IActionResult Get()
         {
@@ -24,7 +24,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(treinos);
         }
 
-        // Método para buscar um treino pelo ID
+        
         [HttpGet("Procurar/{id}")]
         public IActionResult GetById(int id)
         {
@@ -38,7 +38,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(treinoItem);
         }
 
-        // Método para adicionar um novo treino
         [HttpPost("Adicionar")]
         public IActionResult Post([FromBody] Treino item)
         {
@@ -51,7 +50,7 @@ namespace MiceGym_APIs.Controllers
             return StatusCode(StatusCodes.Status201Created, new { id });
         }
 
-        // Método para atualizar um treino existente pelo ID
+        
         [HttpPut("Atualizar/{id}")]
         public IActionResult Put(int id, [FromBody] Treino item)
         {
@@ -62,13 +61,13 @@ namespace MiceGym_APIs.Controllers
                 return NotFound();
             }
 
-            item.Id = id;  // Garantir que o ID não seja alterado
+            item.Id = id;  
             _treinoDAO.Update(item);
 
             return Ok(item);
         }
 
-        // Método para deletar um treino pelo ID
+      
         [HttpDelete("Deletar/{id}")]
         public IActionResult Delete(int id)
         {

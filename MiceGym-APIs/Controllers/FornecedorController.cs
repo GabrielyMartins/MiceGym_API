@@ -17,7 +17,7 @@ namespace MiceGym_APIs.Controllers
             _fornecedorDAO = new FornecedorDAO();
         }
 
-        // Método para listar todos os fornecedores
+       
         [HttpGet]
         public IActionResult Get()
         {
@@ -25,7 +25,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedores);
         }
 
-        // Método para buscar fornecedor pelo CNPJ
         [HttpGet("{cnpj}")]
         public IActionResult GetByCNPJ(string cnpj)
         {
@@ -44,7 +43,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedor);
         }
 
-        // Método para adicionar um novo fornecedor
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO dto)
         {
@@ -83,7 +81,7 @@ namespace MiceGym_APIs.Controllers
             return CreatedAtAction(nameof(GetByCNPJ), new { cnpj = fornecedor.CNPJ }, fornecedor);
         }
 
-        // Método para atualizar um fornecedor existente pelo CNPJ
+       
         [HttpPut("{cnpj}")]
         public IActionResult Put(string cnpj, [FromBody] FornecedorDTO dto)
         {
@@ -103,7 +101,7 @@ namespace MiceGym_APIs.Controllers
             {
                 NomeFantasia = dto.NomeFantasia ?? fornecedorExistente.NomeFantasia,
                 RazaoSocial = dto.RazaoSocial ?? fornecedorExistente.RazaoSocial,
-                CNPJ = cnpj,  // O CNPJ não pode ser alterado
+                CNPJ = cnpj,  
                 Endereco = dto.Endereco ?? fornecedorExistente.Endereco,
                 Cidade = dto.Cidade ?? fornecedorExistente.Cidade,
                 Estado = dto.Estado ?? fornecedorExistente.Estado,
@@ -117,7 +115,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedorAtualizado);
         }
 
-        // Método para deletar um fornecedor pelo CNPJ
+        
         [HttpDelete("{cnpj}")]
         public IActionResult Delete(string cnpj)
         {
@@ -138,7 +136,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedor);
         }
 
-        // Método para validar o CNPJ
+       
         private bool ValidarCNPJ(string cnpj)
         {
             cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");

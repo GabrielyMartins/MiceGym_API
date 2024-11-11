@@ -15,7 +15,7 @@ namespace MiceGym_APIs.DAO
             _conn = new ConnectionMysql();
         }
 
-        // Método para inserir um treino no banco de dados
+       
         public string Insert(Treino treino)
         {
             try
@@ -47,7 +47,6 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        // Método para listar todos os treinos
         public List<Treino> List()
         {
             var treinos = new List<Treino>();
@@ -87,7 +86,7 @@ namespace MiceGym_APIs.DAO
             return treinos;
         }
 
-        // Método para buscar um treino pelo ID
+        
         public Treino GetById(int id)
         {
             try
@@ -126,7 +125,7 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        // Método para atualizar um treino existente
+       
         public void Update(Treino treino)
         {
             try
@@ -159,7 +158,7 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        // Método para deletar um treino
+        
         public void Delete(int id)
         {
             try
