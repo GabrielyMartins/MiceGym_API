@@ -1,16 +1,26 @@
 ﻿using MiceGym_APIs.Modelos;
+using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace MiceGym_APIs.Controllers
 {
-    public class TreinoController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TreinoController : ControllerBase
     {
-        private static List<Treino> treinos = new List<Treino>();
+        private readonly TreinoDAO _treinoDAO;
+
+        public TreinoController()
+        {
+            _treinoDAO = new TreinoDAO();
+        }
 
         // Método para listar todos os treinos
         [HttpGet("Listar")]
         public IActionResult Get()
         {
+            List<Treino> treinos = _treinoDAO.List();
             return Ok(treinos);
         }
 
@@ -18,7 +28,7 @@ namespace MiceGym_APIs.Controllers
         [HttpGet("Procurar/{id}")]
         public IActionResult GetById(int id)
         {
-            var treinoItem = treinos.FirstOrDefault(t => t.Id == id);
+            var treinoItem = _treinoDAO.GetById(id);
 
             if (treinoItem == null)
             {
@@ -32,62 +42,44 @@ namespace MiceGym_APIs.Controllers
         [HttpPost("Adicionar")]
         public IActionResult Post([FromBody] Treino item)
         {
-            var novoTreino = new Treino
+            if (item == null)
             {
-                Id = treinos.Count + 1,
-                Data = item.Data,
-                Frequencia = item.Frequencia,
-                Exercicios = item.Exercicios,
-                SeriesReps = item.SeriesReps,
-                Status = item.Status,
-                Tempodesc = item.Tempodesc,
-                Observacoes = item.Observacoes,
-                Objetivo = item.Objetivo,
-                Carga = item.Carga
-            };
+                return BadRequest("Dados inválidos.");
+            }
 
-            treinos.Add(novoTreino);
-
-            return StatusCode(StatusCodes.Status201Created, novoTreino);
+            var id = _treinoDAO.Insert(item);
+            return StatusCode(StatusCodes.Status201Created, new { id });
         }
 
         // Método para atualizar um treino existente pelo ID
         [HttpPut("Atualizar/{id}")]
         public IActionResult Put(int id, [FromBody] Treino item)
         {
-            var treinoItem = treinos.FirstOrDefault(t => t.Id == id);
+            var treinoItem = _treinoDAO.GetById(id);
 
             if (treinoItem == null)
             {
                 return NotFound();
             }
 
-            treinoItem.Data = item.Data;
-            treinoItem.Frequencia = item.Frequencia;
-            treinoItem.Exercicios = item.Exercicios;
-            treinoItem.SeriesReps = item.SeriesReps;
-            treinoItem.Status = item.Status;
-            treinoItem.Tempodesc = item.Tempodesc;
-            treinoItem.Observacoes = item.Observacoes;
-            treinoItem.Objetivo = item.Objetivo;
-            treinoItem.Carga = item.Carga;
+            item.Id = id;  // Garantir que o ID não seja alterado
+            _treinoDAO.Update(item);
 
-            return Ok(treinoItem);
+            return Ok(item);
         }
 
         // Método para deletar um treino pelo ID
         [HttpDelete("Deletar/{id}")]
         public IActionResult Delete(int id)
         {
-            var treinoItem = treinos.FirstOrDefault(t => t.Id == id);
+            var treinoItem = _treinoDAO.GetById(id);
 
             if (treinoItem == null)
             {
                 return NotFound();
             }
 
-            treinos.Remove(treinoItem);
-
+            _treinoDAO.Delete(id);
             return Ok(treinoItem);
         }
     }

@@ -1,6 +1,8 @@
 ﻿using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
+using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace MiceGym_APIs.Controllers
 {
@@ -8,49 +10,36 @@ namespace MiceGym_APIs.Controllers
     [ApiController]
     public class EquipamentoController : ControllerBase
     {
-        private const string Arquivo = "Dados Equipamento.txt";
+        private readonly EquipamentoDAO _equipamentoDAO;
 
+        public EquipamentoController()
+        {
+            _equipamentoDAO = new EquipamentoDAO();
+        }
+
+        // Método para listar todos os equipamentos
         [HttpGet]
         public IActionResult Get()
         {
-            var equipamentos = LerArquivo();
+            var equipamentos = _equipamentoDAO.List();
             return Ok(equipamentos);
         }
 
-        private void GravarArquivo(List<Equipamento> equipamentos)
+        // Método para buscar um equipamento pelo código
+        [HttpGet("{codigo}")]
+        public IActionResult GetByCodigo(string codigo)
         {
-            var linhas = equipamentos.Select(e => $"{e.Nome}|" +
-                $"{e.Descricao}|" + $"{e.Codigo}|" + $"{e.Quantidade}|" + $"{e.Valor}|" + $"{e.Fornecedor}");
-            System.IO.File.WriteAllLines(Arquivo, linhas);
-        }
+            var equipamento = _equipamentoDAO.GetByCodigo(codigo);
 
-        private List<Equipamento> LerArquivo()
-        {
-            var equipamentos = new List<Equipamento>();
-
-            if (!System.IO.File.Exists(Arquivo))
+            if (equipamento == null)
             {
-                return equipamentos;
+                return NotFound();
             }
 
-            var linhas = System.IO.File.ReadAllLines(Arquivo);
-            foreach (var linha in linhas)
-            {
-                var dados = linha.Split('|');
-                equipamentos.Add(new Equipamento
-                {
-                    Nome = dados[0],
-                    Descricao = dados[1],
-                    Codigo = dados[2],
-                    Quantidade = dados[3],
-                    Valor = dados[4],
-                    Fornecedor = dados[5]
-                });
-            }
-
-            return equipamentos;
+            return Ok(equipamento);
         }
 
+        // Método para adicionar um novo equipamento
         [HttpPost]
         public IActionResult Post([FromBody] EquipamentoDTO dto)
         {
@@ -58,8 +47,6 @@ namespace MiceGym_APIs.Controllers
             {
                 return BadRequest("Dados inválidos.");
             }
-
-            var equipamentos = LerArquivo();
 
             var equipamento = new Equipamento
             {
@@ -71,62 +58,49 @@ namespace MiceGym_APIs.Controllers
                 Fornecedor = dto.Fornecedor
             };
 
-            equipamentos.Add(equipamento);
-            GravarArquivo(equipamentos);
+            _equipamentoDAO.Insert(equipamento);
 
-            // Retorna um status HTTP 201 (Created) com o local do novo recurso
             return CreatedAtAction(nameof(GetByCodigo), new { codigo = equipamento.Codigo }, equipamento);
         }
 
-        [HttpGet("{codigo}")]
-        public IActionResult GetByCodigo(string codigo)
-        {
-            var equipamentos = LerArquivo();
-            var equipamento = equipamentos.FirstOrDefault(e => e.Codigo == codigo);
-
-            if (equipamento == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(equipamento);
-        }
-
+        // Método para atualizar um equipamento existente pelo código
         [HttpPut("{codigo}")]
         public IActionResult Put(string codigo, [FromBody] EquipamentoDTO dto)
         {
-            var equipamentos = LerArquivo();
-            var equipamento = equipamentos.FirstOrDefault(e => e.Codigo == codigo);
+            var equipamentoExistente = _equipamentoDAO.GetByCodigo(codigo);
 
-            if (equipamento == null)
+            if (equipamentoExistente == null)
             {
                 return NotFound();
             }
 
-            equipamento.Nome = dto.Nome ?? equipamento.Nome;
-            equipamento.Descricao = dto.Descricao ?? equipamento.Descricao;
-            equipamento.Quantidade = dto.Quantidade ?? equipamento.Quantidade;
-            equipamento.Valor = dto.Valor ?? equipamento.Valor;
-            equipamento.Fornecedor = dto.Fornecedor ?? equipamento.Fornecedor;
+            var equipamentoAtualizado = new Equipamento
+            {
+                Nome = dto.Nome ?? equipamentoExistente.Nome,
+                Descricao = dto.Descricao ?? equipamentoExistente.Descricao,
+                Codigo = codigo,  // O código não pode ser alterado
+                Quantidade = dto.Quantidade ?? equipamentoExistente.Quantidade,
+                Valor = dto.Valor ?? equipamentoExistente.Valor,
+                Fornecedor = dto.Fornecedor ?? equipamentoExistente.Fornecedor
+            };
 
-            GravarArquivo(equipamentos);
+            _equipamentoDAO.Update(equipamentoAtualizado);
 
-            return Ok(equipamento);
+            return Ok(equipamentoAtualizado);
         }
 
+        // Método para deletar um equipamento pelo código
         [HttpDelete("{codigo}")]
         public IActionResult Delete(string codigo)
         {
-            var equipamentos = LerArquivo();
-            var equipamento = equipamentos.FirstOrDefault(e => e.Codigo == codigo);
+            var equipamento = _equipamentoDAO.GetByCodigo(codigo);
 
             if (equipamento == null)
             {
                 return NotFound();
             }
 
-            equipamentos.Remove(equipamento);
-            GravarArquivo(equipamentos);
+            _equipamentoDAO.Delete(codigo);
 
             return Ok(equipamento);
         }

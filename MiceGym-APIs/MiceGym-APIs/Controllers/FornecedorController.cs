@@ -1,74 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MiceGym_APIs.DTOS;
+using MiceGym_APIs.Modelos;
+using MiceGym_APIs.DAO;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace MiceGym_APIs.Controllers
 {
-    using MiceGym_APIs.DTOS;
-    using MiceGym_APIs.Modelos;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
-
     [Route("api/[controller]")]
     [ApiController]
     public class FornecedorController : ControllerBase
     {
-        private const string Arquivo = "Dados Fornecedor.txt";
+        private readonly FornecedorDAO _fornecedorDAO;
 
+        public FornecedorController()
+        {
+            _fornecedorDAO = new FornecedorDAO();
+        }
+
+        // Método para listar todos os fornecedores
         [HttpGet]
         public IActionResult Get()
         {
-            var fornecedores = LerArquivo();
+            var fornecedores = _fornecedorDAO.List();
             return Ok(fornecedores);
         }
-        private bool ValidarCNPJ(string cnpj)
-        {
-            cnpj = Regex.Replace(cnpj, @"\D", "");
-            return cnpj.Length == 14;
-        }
 
-        private void GravarArquivo(List<Fornecedores> fornecedores)
-        {
-            var linhas = fornecedores.Select(f => $"{f.NomeFantasia}|" +
-            $"{f.RazaoSocial}|" + $"{f.CNPJ}|" + $"{f.Endereco}|" + $"{f.Cidade}|" + $"{f.Estado}|" + $"{f.Telefone}|" + $"{f.Email}|" + $"{f.Responsavel}");
-
-            System.IO.File.WriteAllLines(Arquivo, linhas);
-        }
-
-        private List<Fornecedores> LerArquivo()
-        {
-            var fornecedores = new List<Fornecedores>();
-
-            if (!System.IO.File.Exists(Arquivo))
-            {
-                return fornecedores;
-            }
-
-            var linhas = System.IO.File.ReadAllLines(Arquivo);
-            foreach (var linha in linhas)
-            {
-                var dados = linha.Split('|');
-                fornecedores.Add(new Fornecedores
-                {
-                    NomeFantasia = dados[0],
-                    RazaoSocial = dados[1],
-                    CNPJ = dados[2],
-                    Endereco = dados[3],
-                    Cidade = dados[4],
-                    Estado = dados[5],
-                    Telefone = dados[6],
-                    Email = dados[7],
-                    Responsavel = dados[8]
-                });
-            }
-
-            return fornecedores;
-        }
-
-
+        // Método para buscar fornecedor pelo CNPJ
         [HttpGet("{cnpj}")]
         public IActionResult GetByCNPJ(string cnpj)
         {
@@ -77,8 +34,7 @@ namespace MiceGym_APIs.Controllers
                 return BadRequest("CNPJ inválido.");
             }
 
-            var fornecedores = LerArquivo();
-            var fornecedor = fornecedores.FirstOrDefault(f => f.CNPJ == cnpj);
+            var fornecedor = _fornecedorDAO.GetByCNPJ(cnpj);
 
             if (fornecedor == null)
             {
@@ -88,6 +44,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedor);
         }
 
+        // Método para adicionar um novo fornecedor
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO dto)
         {
@@ -102,7 +59,7 @@ namespace MiceGym_APIs.Controllers
                 return BadRequest("CNPJ inválido.");
             }
 
-            var fornecedores = LerArquivo();
+            var fornecedores = _fornecedorDAO.List();
             if (fornecedores.Any(f => f.CNPJ == cnpj))
             {
                 return Conflict("Fornecedor existente.");
@@ -121,12 +78,12 @@ namespace MiceGym_APIs.Controllers
                 Responsavel = dto.Responsavel
             };
 
-            fornecedores.Add(fornecedor);
-            GravarArquivo(fornecedores);
+            _fornecedorDAO.Insert(fornecedor);
 
             return CreatedAtAction(nameof(GetByCNPJ), new { cnpj = fornecedor.CNPJ }, fornecedor);
         }
 
+        // Método para atualizar um fornecedor existente pelo CNPJ
         [HttpPut("{cnpj}")]
         public IActionResult Put(string cnpj, [FromBody] FornecedorDTO dto)
         {
@@ -135,48 +92,57 @@ namespace MiceGym_APIs.Controllers
                 return BadRequest("CNPJ inválido.");
             }
 
-            var fornecedores = LerArquivo();
-            var fornecedor = fornecedores.FirstOrDefault(f => f.CNPJ == cnpj);
+            var fornecedorExistente = _fornecedorDAO.GetByCNPJ(cnpj);
+
+            if (fornecedorExistente == null)
+            {
+                return NotFound();
+            }
+
+            var fornecedorAtualizado = new Fornecedores
+            {
+                NomeFantasia = dto.NomeFantasia ?? fornecedorExistente.NomeFantasia,
+                RazaoSocial = dto.RazaoSocial ?? fornecedorExistente.RazaoSocial,
+                CNPJ = cnpj,  // O CNPJ não pode ser alterado
+                Endereco = dto.Endereco ?? fornecedorExistente.Endereco,
+                Cidade = dto.Cidade ?? fornecedorExistente.Cidade,
+                Estado = dto.Estado ?? fornecedorExistente.Estado,
+                Telefone = dto.Telefone ?? fornecedorExistente.Telefone,
+                Email = dto.Email ?? fornecedorExistente.Email,
+                Responsavel = dto.Responsavel ?? fornecedorExistente.Responsavel
+            };
+
+            _fornecedorDAO.Update(fornecedorAtualizado);
+
+            return Ok(fornecedorAtualizado);
+        }
+
+        // Método para deletar um fornecedor pelo CNPJ
+        [HttpDelete("{cnpj}")]
+        public IActionResult Delete(string cnpj)
+        {
+            if (!ValidarCNPJ(cnpj))
+            {
+                return BadRequest("CNPJ inválido.");
+            }
+
+            var fornecedor = _fornecedorDAO.GetByCNPJ(cnpj);
 
             if (fornecedor == null)
             {
                 return NotFound();
             }
 
-            fornecedor.NomeFantasia = dto.NomeFantasia ?? fornecedor.NomeFantasia;
-            fornecedor.RazaoSocial = dto.RazaoSocial ?? fornecedor.RazaoSocial;
-            fornecedor.Endereco = dto.Endereco ?? fornecedor.Endereco;
-            fornecedor.Cidade = dto.Cidade ?? fornecedor.Cidade;
-            fornecedor.Estado = dto.Estado ?? fornecedor.Estado;
-            fornecedor.Telefone = dto.Telefone ?? fornecedor.Telefone;
-            fornecedor.Email = dto.Email ?? fornecedor.Email;
-            fornecedor.Responsavel = dto.Responsavel ?? fornecedor.Responsavel;
-
-            GravarArquivo(fornecedores);
+            _fornecedorDAO.Delete(cnpj);
 
             return Ok(fornecedor);
         }
 
-        [HttpDelete("{cnpj}")]
-        public IActionResult Deletar(string cnpj)
+        // Método para validar o CNPJ
+        private bool ValidarCNPJ(string cnpj)
         {
-            if (!ValidarCNPJ(cnpj))
-            {
-                return BadRequest("CNPJ inválido. Tente novamente!");
-            }
-
-            var fornecedores = LerArquivo();
-            var fornecedor = fornecedores.FirstOrDefault(f => f.CNPJ == cnpj);
-
-            if (fornecedor == null)
-            {
-                return NotFound();
-            }
-
-            fornecedores.Remove(fornecedor);
-            GravarArquivo(fornecedores);
-
-            return Ok(fornecedor);
+            cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");
+            return cnpj.Length == 14;
         }
     }
 }
