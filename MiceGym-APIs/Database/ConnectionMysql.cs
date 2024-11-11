@@ -28,9 +28,9 @@ namespace MiceGym_APIs.Database
                 connection.Open();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 

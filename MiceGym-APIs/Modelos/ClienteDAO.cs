@@ -20,7 +20,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO clientes (nome, cpf, rg, data_nascimento, sexo, telefone, endereco, cidade, estado, email) " +
+                query.CommandText = "INSERT INTO cliente (nome, cpf, rg, data_nascimento, sexo, telefone, endereco, cidade, estado, email) " +
                                     "VALUES (@nome, @cpf, @rg, @data_nascimento, @sexo, @telefone, @endereco, @cidade, @estado, @email)";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
@@ -54,7 +54,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM clientes";
+                query.CommandText = "SELECT * FROM cliente";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
@@ -91,7 +91,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM clientes WHERE cpf = @cpf";
+                query.CommandText = "SELECT * FROM cliente WHERE cpf_cli = @cpf";
                 query.Parameters.AddWithValue("@cpf", cpf);
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -129,7 +129,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE clientes SET nome = @nome, rg = @rg, data_nascimento = @data_nascimento, sexo = @sexo, " +
+                query.CommandText = "UPDATE cliente SET nome = @nome, rg = @rg, data_nascimento = @data_nascimento, sexo = @sexo, " +
                                     "telefone = @telefone, endereco = @endereco, cidade = @cidade, estado = @estado, email = @email " +
                                     "WHERE cpf = @cpf";
 
@@ -161,7 +161,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM clientes WHERE cpf = @cpf";
+                query.CommandText = "DELETE FROM cliente WHERE cpf = @cpf";
                 query.Parameters.AddWithValue("@cpf", cpf);
 
                 query.ExecuteNonQuery();
