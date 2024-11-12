@@ -1,49 +1,151 @@
-﻿namespace MiceGym_APIs.Modelos
+﻿using MiceGym_APIs.Modelos;
+using MiceGym_APIs.Database;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+
+namespace MiceGym_APIs.DAO
 {
     public class CaixaDAO
     {
-        private static List<Caixa> caixas = new List<Caixa>();
+        private readonly ConnectionMysql _conn;
 
-        public List<Caixa> Listar()
+        public CaixaDAO()
         {
-            return caixas;
+            _conn = new ConnectionMysql();
         }
 
-        public Caixa Procurar(int id)
+        public int Insert(Caixa caixa)
         {
-            return caixas.FirstOrDefault(c => c.Id == id);
-        }
-
-        public Caixa Adicionar(Caixa caixa)
-        {
-            caixa.Id = caixas.Count + 1;  
-            caixas.Add(caixa);
-            return caixa;
-        }
-
-        public Caixa Atualizar(int id, Caixa caixaAtualizado)
-        {
-            var caixaExistente = Procurar(id);
-            if (caixaExistente != null)
+            try
             {
-                caixaExistente.SaldoInicial = caixaAtualizado.SaldoInicial;
-                caixaExistente.DataAbertura = caixaAtualizado.DataAbertura;
-                caixaExistente.DataFechamento = caixaAtualizado.DataFechamento;
-                caixaExistente.SaldoFinal = caixaAtualizado.SaldoFinal;
-                return caixaExistente;
+                var query = _conn.Query();
+                query.CommandText = "INSERT INTO caixas (saldo_inicial, data_abertura, data_fechamento, saldo_final) " +
+                                    "VALUES (@saldo_inicial, @data_abertura, @data_fechamento, @saldo_final)";
+
+                query.Parameters.AddWithValue("@saldo_inicial", caixa.SaldoInicial);
+                query.Parameters.AddWithValue("@data_abertura", caixa.DataAbertura);
+                query.Parameters.AddWithValue("@data_fechamento", caixa.DataFechamento);
+                query.Parameters.AddWithValue("@saldo_final", caixa.SaldoFinal);
+                query.ExecuteNonQuery();
+
+                return (int)query.LastInsertedId;
             }
-            return null;
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
 
-        public bool Deletar(int id)
+        public List<Caixa> List()
         {
-            var caixaExistente = Procurar(id);
-            if (caixaExistente != null)
+            List<Caixa> lista = new List<Caixa>();
+            try
             {
-                caixas.Remove(caixaExistente);
-                return true;
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM caixas";
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new Caixa
+                    {
+                        Id = reader.GetInt32("id"),
+                        SaldoInicial = reader.GetDecimal("saldo_inicial"),
+                        DataAbertura = reader.GetDateTime("data_abertura"),
+                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("data_fechamento")) ? (DateTime?)null : reader.GetDateTime("data_fechamento"),
+                        SaldoFinal = reader.GetDecimal("saldo_final")
+                    });
+                }
+                return lista;
             }
-            return false;
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
+        public Caixa? GetById(int id)
+        {
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM caixas WHERE id = @id";
+                query.Parameters.AddWithValue("@id", id);
+                MySqlDataReader reader = query.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new Caixa
+                    {
+                        Id = reader.GetInt32("id"),
+                        SaldoInicial = reader.GetDecimal("saldo_inicial"),
+                        DataAbertura = reader.GetDateTime("data_abertura"),
+                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("data_fechamento")) ? (DateTime?)null : reader.GetDateTime("data_fechamento"),
+                        SaldoFinal = reader.GetDecimal("saldo_final")
+                    };
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
+        public void Update(Caixa caixa)
+        {
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "UPDATE caixas SET saldo_inicial = @saldo_inicial, data_abertura = @data_abertura, " +
+                                    "data_fechamento = @data_fechamento, saldo_final = @saldo_final WHERE id = @id";
+                query.Parameters.AddWithValue("@saldo_inicial", caixa.SaldoInicial);
+                query.Parameters.AddWithValue("@data_abertura", caixa.DataAbertura);
+                query.Parameters.AddWithValue("@data_fechamento", caixa.DataFechamento);
+                query.Parameters.AddWithValue("@saldo_final", caixa.SaldoFinal);
+                query.Parameters.AddWithValue("@id", caixa.Id);
+                query.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "DELETE FROM caixas WHERE id = @id";
+                query.Parameters.AddWithValue("@id", id);
+                query.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
     }
 }

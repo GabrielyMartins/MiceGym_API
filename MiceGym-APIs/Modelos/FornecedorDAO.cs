@@ -1,84 +1,166 @@
 ﻿using MiceGym_APIs.Modelos;
+using MiceGym_APIs.Database;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MiceGym_APIs.DAO
 {
     public class FornecedorDAO
     {
-        private const string Arquivo = "Dados Fornecedor.txt";
+        private readonly ConnectionMysql _conn;
+
+        public FornecedorDAO()
+        {
+            _conn = new ConnectionMysql();
+        }
 
         public List<Fornecedores> List()
         {
-            var fornecedores = new List<Fornecedores>();
-
-            if (!System.IO.File.Exists(Arquivo))
+            List<Fornecedores> fornecedores = new List<Fornecedores>();
+            try
             {
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM fornecedores";
+                MySqlDataReader reader = query.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    fornecedores.Add(new Fornecedores
+                    {
+                        NomeFantasia = reader.GetString("nome_fantasia"),
+                        RazaoSocial = reader.GetString("razao_social"),
+                        CNPJ = reader.GetString("cnpj"),
+                        Endereco = reader.GetString("endereco"),
+                        Cidade = reader.GetString("cidade"),
+                        Estado = reader.GetString("estado"),
+                        Telefone = reader.GetString("telefone"),
+                        Email = reader.GetString("email"),
+                        Responsavel = reader.GetString("responsavel")
+                    });
+                }
                 return fornecedores;
             }
-
-            var linhas = System.IO.File.ReadAllLines(Arquivo);
-            foreach (var linha in linhas)
+            catch (Exception)
             {
-                var dados = linha.Split('|');
-                fornecedores.Add(new Fornecedores
-                {
-                    NomeFantasia = dados[0],
-                    RazaoSocial = dados[1],
-                    CNPJ = dados[2],
-                    Endereco = dados[3],
-                    Cidade = dados[4],
-                    Estado = dados[5],
-                    Telefone = dados[6],
-                    Email = dados[7],
-                    Responsavel = dados[8]
-                });
+                throw;
             }
-
-            return fornecedores;
+            finally
+            {
+                _conn.Close();
+            }
         }
 
-        public Fornecedores GetByCNPJ(string cnpj)
+        public Fornecedores? GetByCNPJ(string cnpj)
         {
-            var fornecedores = List();
-            return fornecedores.FirstOrDefault(f => f.CNPJ == cnpj);
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM fornecedores WHERE cnpj = @cnpj";
+                query.Parameters.AddWithValue("@cnpj", cnpj);
+                MySqlDataReader reader = query.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new Fornecedores
+                    {
+                        NomeFantasia = reader.GetString("nome_fantasia"),
+                        RazaoSocial = reader.GetString("razao_social"),
+                        CNPJ = reader.GetString("cnpj"),
+                        Endereco = reader.GetString("endereco"),
+                        Cidade = reader.GetString("cidade"),
+                        Estado = reader.GetString("estado"),
+                        Telefone = reader.GetString("telefone"),
+                        Email = reader.GetString("email"),
+                        Responsavel = reader.GetString("responsavel")
+                    };
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
 
         public void Insert(Fornecedores fornecedor)
         {
-            var fornecedores = List();
-            fornecedores.Add(fornecedor);
-            GravarArquivo(fornecedores);
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "INSERT INTO fornecedores (nome_fantasia, razao_social, cnpj, endereco, cidade, estado, telefone, email, responsavel) " +
+                                    "VALUES (@nomeFantasia, @razaoSocial, @cnpj, @endereco, @cidade, @estado, @telefone, @email, @responsavel)";
+                query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
+                query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
+                query.Parameters.AddWithValue("@cnpj", fornecedor.CNPJ);
+                query.Parameters.AddWithValue("@endereco", fornecedor.Endereco);
+                query.Parameters.AddWithValue("@cidade", fornecedor.Cidade);
+                query.Parameters.AddWithValue("@estado", fornecedor.Estado);
+                query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
+                query.Parameters.AddWithValue("@email", fornecedor.Email);
+                query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
+                query.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
 
         public void Update(Fornecedores fornecedor)
         {
-            var fornecedores = List();
-            var index = fornecedores.FindIndex(f => f.CNPJ == fornecedor.CNPJ);
-
-            if (index != -1)
+            try
             {
-                fornecedores[index] = fornecedor;
-                GravarArquivo(fornecedores);
+                var query = _conn.Query();
+                query.CommandText = "UPDATE fornecedores SET nome_fantasia = @nomeFantasia, razao_social = @razaoSocial, endereco = @endereco, " +
+                                    "cidade = @cidade, estado = @estado, telefone = @telefone, email = @email, responsavel = @responsavel " +
+                                    "WHERE cnpj = @cnpj";
+                query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
+                query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
+                query.Parameters.AddWithValue("@endereco", fornecedor.Endereco);
+                query.Parameters.AddWithValue("@cidade", fornecedor.Cidade);
+                query.Parameters.AddWithValue("@estado", fornecedor.Estado);
+                query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
+                query.Parameters.AddWithValue("@email", fornecedor.Email);
+                query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
+                query.Parameters.AddWithValue("@cnpj", fornecedor.CNPJ);
+                query.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
             }
         }
 
         public void Delete(string cnpj)
         {
-            var fornecedores = List();
-            var fornecedor = fornecedores.FirstOrDefault(f => f.CNPJ == cnpj);
-
-            if (fornecedor != null)
+            try
             {
-                fornecedores.Remove(fornecedor);
-                GravarArquivo(fornecedores);
+                var query = _conn.Query();
+                query.CommandText = "DELETE FROM fornecedores WHERE cnpj = @cnpj";
+                query.Parameters.AddWithValue("@cnpj", cnpj);
+                query.ExecuteNonQuery();
             }
-        }
-
-        private void GravarArquivo(List<Fornecedores> fornecedores)
-        {
-            var linhas = fornecedores.Select(f => $"{f.NomeFantasia}|{f.RazaoSocial}|{f.CNPJ}|{f.Endereco}|{f.Cidade}|{f.Estado}|{f.Telefone}|{f.Email}|{f.Responsavel}");
-            System.IO.File.WriteAllLines(Arquivo, linhas);
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
     }
 }

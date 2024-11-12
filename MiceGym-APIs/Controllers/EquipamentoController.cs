@@ -17,7 +17,6 @@ namespace MiceGym_APIs.Controllers
             _equipamentoDAO = new EquipamentoDAO();
         }
 
-       
         [HttpGet]
         public IActionResult Get()
         {
@@ -25,7 +24,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(equipamentos);
         }
 
-        
         [HttpGet("{codigo}")]
         public IActionResult GetByCodigo(string codigo)
         {
@@ -39,7 +37,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(equipamento);
         }
 
-        
         [HttpPost]
         public IActionResult Post([FromBody] EquipamentoDTO dto)
         {
@@ -63,7 +60,6 @@ namespace MiceGym_APIs.Controllers
             return CreatedAtAction(nameof(GetByCodigo), new { codigo = equipamento.Codigo }, equipamento);
         }
 
-       
         [HttpPut("{codigo}")]
         public IActionResult Put(string codigo, [FromBody] EquipamentoDTO dto)
         {
@@ -74,22 +70,17 @@ namespace MiceGym_APIs.Controllers
                 return NotFound();
             }
 
-            var equipamentoAtualizado = new Equipamento
-            {
-                Nome = dto.Nome ?? equipamentoExistente.Nome,
-                Descricao = dto.Descricao ?? equipamentoExistente.Descricao,
-                Codigo = codigo,  
-                Quantidade = dto.Quantidade ?? equipamentoExistente.Quantidade,
-                Valor = dto.Valor ?? equipamentoExistente.Valor,
-                Fornecedor = dto.Fornecedor ?? equipamentoExistente.Fornecedor
-            };
+            equipamentoExistente.Nome = dto.Nome ?? equipamentoExistente.Nome;
+            equipamentoExistente.Descricao = dto.Descricao ?? equipamentoExistente.Descricao;
+            equipamentoExistente.Quantidade = dto.Quantidade > 0 ? dto.Quantidade : equipamentoExistente.Quantidade;
+            equipamentoExistente.Valor = dto.Valor > 0 ? dto.Valor : equipamentoExistente.Valor;
+            equipamentoExistente.Fornecedor = dto.Fornecedor ?? equipamentoExistente.Fornecedor;
 
-            _equipamentoDAO.Update(equipamentoAtualizado);
+            _equipamentoDAO.Update(equipamentoExistente);
 
-            return Ok(equipamentoAtualizado);
+            return Ok(equipamentoExistente);
         }
 
-        
         [HttpDelete("{codigo}")]
         public IActionResult Delete(string codigo)
         {
@@ -102,7 +93,7 @@ namespace MiceGym_APIs.Controllers
 
             _equipamentoDAO.Delete(codigo);
 
-            return Ok(equipamento);
+            return NoContent();
         }
     }
 }

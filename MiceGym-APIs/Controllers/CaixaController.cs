@@ -9,20 +9,24 @@ namespace MiceGym_APIs.Controllers
     [ApiController]
     public class CaixaController : ControllerBase
     {
-        private readonly CaixaDAO _caixaDAO = new CaixaDAO();
+        private readonly CaixaDAO _caixaDAO;
+
+        public CaixaController(CaixaDAO caixaDAO)
+        {
+            _caixaDAO = caixaDAO;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var caixas = _caixaDAO.Listar();
+            var caixas = _caixaDAO.List();
             return Ok(caixas);
         }
-
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var caixa = _caixaDAO.Procurar(id);
+            var caixa = _caixaDAO.GetById(id);
             if (caixa == null)
             {
                 return NotFound();
@@ -30,7 +34,6 @@ namespace MiceGym_APIs.Controllers
             return Ok(caixa);
         }
 
-        
         [HttpPost]
         public IActionResult Post([FromBody] CaixaDTO caixaDTO)
         {
@@ -47,11 +50,10 @@ namespace MiceGym_APIs.Controllers
                 SaldoFinal = caixaDTO.SaldoFinal
             };
 
-            var novoCaixa = _caixaDAO.Adicionar(caixa);
-            return CreatedAtAction(nameof(GetById), new { id = novoCaixa.Id }, novoCaixa);
+            var novoId = _caixaDAO.Insert(caixa);
+            return CreatedAtAction(nameof(GetById), new { id = novoId }, caixa);
         }
 
-        
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] CaixaDTO caixaDTO)
         {
@@ -62,29 +64,33 @@ namespace MiceGym_APIs.Controllers
 
             var caixaAtualizado = new Caixa
             {
+                Id = id,
                 SaldoInicial = caixaDTO.SaldoInicial,
                 DataAbertura = caixaDTO.DataAbertura,
                 DataFechamento = caixaDTO.DataFechamento,
                 SaldoFinal = caixaDTO.SaldoFinal
             };
 
-            var caixa = _caixaDAO.Atualizar(id, caixaAtualizado);
+            var caixa = _caixaDAO.GetById(id);
             if (caixa == null)
             {
                 return NotFound();
             }
-            return Ok(caixa);
+
+            _caixaDAO.Update(caixaAtualizado);
+            return Ok(caixaAtualizado);
         }
 
-        
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var sucesso = _caixaDAO.Deletar(id);
-            if (!sucesso)
+            var caixa = _caixaDAO.GetById(id);
+            if (caixa == null)
             {
                 return NotFound();
             }
+
+            _caixaDAO.Delete(id);
             return NoContent();
         }
     }
