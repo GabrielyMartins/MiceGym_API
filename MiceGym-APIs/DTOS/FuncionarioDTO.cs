@@ -11,6 +11,11 @@
         public string Sala { get; set; }
         public string Telefone { get; set; }
         public EnderecoDTO Endereco { get; set; }
+        public string UF { get; internal set; }
+        public string Cidade { get; internal set; }
+        public string Bairro { get; internal set; }
+        public string Numero { get; internal set; }
+        public string CEP { get; internal set; }
     }
 
     public class EnderecoDTO

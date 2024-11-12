@@ -29,9 +29,7 @@ namespace MiceGym_APIs.Controllers
                 DataNascimento = c.DataNascimento,
                 Sexo = c.Sexo,
                 Telefone = c.Telefone,
-                Endereco = c.Endereco,
                 Cidade = c.Cidade,
-                Estado = c.Estado,
                 Email = c.Email
             }).ToList();
 
@@ -53,9 +51,7 @@ namespace MiceGym_APIs.Controllers
                 DataNascimento = cliente.DataNascimento,
                 Sexo = cliente.Sexo,
                 Telefone = cliente.Telefone,
-                Endereco = cliente.Endereco,
                 Cidade = cliente.Cidade,
-                Estado = cliente.Estado,
                 Email = cliente.Email
             };
 
@@ -79,9 +75,11 @@ namespace MiceGym_APIs.Controllers
                 DataNascimento = dto.DataNascimento,
                 Sexo = dto.Sexo,
                 Telefone = dto.Telefone,
-                Endereco = dto.Endereco,
+                UF = dto.UF,
                 Cidade = dto.Cidade,
-                Estado = dto.Estado,
+                Bairro = dto.Bairro,
+                Numero = dto.Numero,
+                CEP = dto.CEP,
                 Email = dto.Email
             };
 
@@ -101,9 +99,7 @@ namespace MiceGym_APIs.Controllers
             cliente.DataNascimento = dto.DataNascimento != default ? dto.DataNascimento : cliente.DataNascimento;
             cliente.Sexo = dto.Sexo ?? cliente.Sexo;
             cliente.Telefone = dto.Telefone ?? cliente.Telefone;
-            cliente.Endereco = dto.Endereco ?? cliente.Endereco;
             cliente.Cidade = dto.Cidade ?? cliente.Cidade;
-            cliente.Estado = dto.Estado ?? cliente.Estado;
             cliente.Email = dto.Email ?? cliente.Email;
 
             _dao.Update(cliente);

@@ -31,14 +31,12 @@ namespace MiceGym_APIs.Controllers
                 Setor = f.Setor,
                 Sala = f.Sala,
                 Telefone = f.Telefone,
-                Endereco = new EnderecoDTO
-                {
-                    UF = f.Endereco.UF,
-                    Cidade = f.Endereco.Cidade,
-                    Bairro = f.Endereco.Bairro,
-                    Numero = f.Endereco.Numero,
-                    CEP = f.Endereco.CEP
-                }
+                UF = f.UF,
+                Cidade = f.Cidade,
+                Bairro = f.Bairro,
+                Numero = f.Numero,
+                CEP = f.CEP
+                
             }).ToList();
 
             return Ok(funcionarioDTOs);
@@ -61,14 +59,12 @@ namespace MiceGym_APIs.Controllers
                 Setor = funcionario.Setor,
                 Sala = funcionario.Sala,
                 Telefone = funcionario.Telefone,
-                Endereco = new EnderecoDTO
-                {
-                    UF = funcionario.Endereco.UF,
-                    Cidade = funcionario.Endereco.Cidade,
-                    Bairro = funcionario.Endereco.Bairro,
-                    Numero = funcionario.Endereco.Numero,
-                    CEP = funcionario.Endereco.CEP
-                }
+                UF = funcionario.UF,
+                    Cidade = funcionario.Cidade,
+                    Bairro = funcionario.Bairro,
+                    Numero = funcionario.Numero,
+                    CEP = funcionario.CEP
+                
             };
 
             return Ok(funcionarioDTO);
@@ -93,14 +89,12 @@ namespace MiceGym_APIs.Controllers
                 Setor = dto.Setor,
                 Sala = dto.Sala,
                 Telefone = dto.Telefone,
-                Endereco = new Endereco
-                {
                     UF = dto.Endereco.UF,
                     Cidade = dto.Endereco.Cidade,
                     Bairro = dto.Endereco.Bairro,
                     Numero = dto.Endereco.Numero,
                     CEP = dto.Endereco.CEP
-                }
+       
             };
 
             var cpfCriado = _dao.Insert(funcionario);
@@ -121,11 +115,11 @@ namespace MiceGym_APIs.Controllers
             funcionario.Setor = dto.Setor ?? funcionario.Setor;
             funcionario.Sala = dto.Sala ?? funcionario.Sala;
             funcionario.Telefone = dto.Telefone ?? funcionario.Telefone;
-            funcionario.Endereco.UF = dto.Endereco.UF ?? funcionario.Endereco.UF;
-            funcionario.Endereco.Cidade = dto.Endereco.Cidade ?? funcionario.Endereco.Cidade;
-            funcionario.Endereco.Bairro = dto.Endereco.Bairro ?? funcionario.Endereco.Bairro;
-            funcionario.Endereco.Numero = dto.Endereco.Numero ?? funcionario.Endereco.Numero;
-            funcionario.Endereco.CEP = dto.Endereco.CEP ?? funcionario.Endereco.CEP;
+            funcionario.UF = dto.Endereco.UF ?? funcionario.UF;
+            funcionario.Cidade = dto.Endereco.Cidade ?? funcionario.Cidade;
+            funcionario.Bairro = dto.Endereco.Bairro ?? funcionario.Bairro;
+            funcionario.Numero = dto.Endereco.Numero ?? funcionario.Numero;
+            funcionario.CEP = dto.Endereco.CEP ?? funcionario.CEP;
 
             _dao.Update(funcionario);
 

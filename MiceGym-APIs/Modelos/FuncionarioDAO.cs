@@ -30,11 +30,11 @@ namespace MiceGym_APIs.Modelos
                 query.Parameters.AddWithValue("@setor", funcionario.Setor);
                 query.Parameters.AddWithValue("@sala", funcionario.Sala);
                 query.Parameters.AddWithValue("@telefone", funcionario.Telefone);
-                query.Parameters.AddWithValue("@uf", funcionario.Endereco.UF);
-                query.Parameters.AddWithValue("@cidade", funcionario.Endereco.Cidade);
-                query.Parameters.AddWithValue("@bairro", funcionario.Endereco.Bairro);
-                query.Parameters.AddWithValue("@numero", funcionario.Endereco.Numero);
-                query.Parameters.AddWithValue("@cep", funcionario.Endereco.CEP);
+                query.Parameters.AddWithValue("@uf", funcionario.UF);
+                query.Parameters.AddWithValue("@cidade", funcionario.Cidade);
+                query.Parameters.AddWithValue("@bairro", funcionario.Bairro);
+                query.Parameters.AddWithValue("@numero", funcionario.Numero);
+                query.Parameters.AddWithValue("@cep", funcionario.CEP);
                 query.ExecuteNonQuery();
 
                 return funcionario.CPF;
@@ -70,14 +70,12 @@ namespace MiceGym_APIs.Modelos
                         Setor = reader.GetString("setor"),
                         Sala = reader.GetString("sala"),
                         Telefone = reader.GetString("telefone"),
-                        Endereco = new Endereco
-                        {
-                            UF = reader.GetString("uf"),
-                            Cidade = reader.GetString("cidade"),
-                            Bairro = reader.GetString("bairro"),
-                            Numero = reader.GetString("numero"),
-                            CEP = reader.GetString("cep")
-                        }
+                        UF = reader.GetString("uf"),
+                        Cidade = reader.GetString("cidade"),
+                        Bairro = reader.GetString("bairro"),
+                        Numero = reader.GetString("numero"),
+                        CEP = reader.GetString("cep")
+                      
                     });
                 }
                 return lista;

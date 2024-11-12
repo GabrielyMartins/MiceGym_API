@@ -29,9 +29,11 @@ namespace MiceGym_APIs.DAO
                 query.Parameters.AddWithValue("@data_nascimento", cliente.DataNascimento);
                 query.Parameters.AddWithValue("@sexo", cliente.Sexo);
                 query.Parameters.AddWithValue("@telefone", cliente.Telefone);
-                query.Parameters.AddWithValue("@endereco", cliente.Endereco);
                 query.Parameters.AddWithValue("@cidade", cliente.Cidade);
-                query.Parameters.AddWithValue("@estado", cliente.Estado);
+                query.Parameters.AddWithValue("@estado", cliente.UF);
+                query.Parameters.AddWithValue("@estado", cliente.Bairro);
+                query.Parameters.AddWithValue("@estado", cliente.CEP);
+                query.Parameters.AddWithValue("@estado", cliente.Numero);
                 query.Parameters.AddWithValue("@email", cliente.Email);
 
                 query.ExecuteNonQuery();
@@ -67,9 +69,8 @@ namespace MiceGym_APIs.DAO
                         DataNascimento = reader.GetDateTime("data_nascimento"),
                         Sexo = reader.GetString("sexo"),
                         Telefone = reader.GetString("telefone"),
-                        Endereco = reader.GetString("endereco"),
                         Cidade = reader.GetString("cidade"),
-                        Estado = reader.GetString("estado"),
+                        UF = reader.GetString("estado"),
                         Email = reader.GetString("email")
                     });
                 }
@@ -106,9 +107,8 @@ namespace MiceGym_APIs.DAO
                         DataNascimento = reader.GetDateTime("data_nascimento"),
                         Sexo = reader.GetString("sexo"),
                         Telefone = reader.GetString("telefone"),
-                        Endereco = reader.GetString("endereco"),
                         Cidade = reader.GetString("cidade"),
-                        Estado = reader.GetString("estado"),
+                        UF = reader.GetString("estado"),
                         Email = reader.GetString("email")
                     };
                 }
@@ -138,9 +138,8 @@ namespace MiceGym_APIs.DAO
                 query.Parameters.AddWithValue("@data_nascimento", cliente.DataNascimento);
                 query.Parameters.AddWithValue("@sexo", cliente.Sexo);
                 query.Parameters.AddWithValue("@telefone", cliente.Telefone);
-                query.Parameters.AddWithValue("@endereco", cliente.Endereco);
                 query.Parameters.AddWithValue("@cidade", cliente.Cidade);
-                query.Parameters.AddWithValue("@estado", cliente.Estado);
+                query.Parameters.AddWithValue("@estado", cliente.UF);
                 query.Parameters.AddWithValue("@email", cliente.Email);
                 query.Parameters.AddWithValue("@cpf", cliente.CPF);
 

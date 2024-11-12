@@ -54,7 +54,7 @@ namespace MiceGym_APIs.Controllers
 
             _planoDAO.Insert(plano);
 
-            return CreatedAtAction(nameof(GetById), new { codPlano = plano.CodPlano }, plano);
+            return CreatedAtAction(nameof(GetById), new { codPlano = plano.Id }, plano);
         }
 
         [HttpPut("{codPlano}")]
