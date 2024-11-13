@@ -23,7 +23,7 @@ namespace MiceGym_APIs.DAO
 
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "SELECT * FROM Servicos";
+                string query = "select * from servico";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 connection.Open();
                 MySqlDataReader reader = command.ExecuteReader();
@@ -32,9 +32,10 @@ namespace MiceGym_APIs.DAO
                 {
                     servicos.Add(new Servico
                     {
-                        Id = reader.GetInt32("Id"),
-                        Descricao = reader.GetString("Descricao"),
-                        Nome = reader.GetString("Nome")
+                        Id = reader.GetInt32("id_ser"),
+                        Descricao = reader.GetString("descricao_ser"),
+                        Nome = reader.GetString("nome_ser"),
+                        preco = reader.GetDecimal("preco_ser")
                     });
                 }
             }
@@ -49,7 +50,7 @@ namespace MiceGym_APIs.DAO
 
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "SELECT * FROM Servicos WHERE Id = @Id";
+                string query = "select * from servico where id_ser = @Id";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
@@ -59,9 +60,11 @@ namespace MiceGym_APIs.DAO
                 {
                     servico = new Servico
                     {
-                        Id = reader.GetInt32("Id"),
-                        Descricao = reader.GetString("Descricao"),
-                        Nome = reader.GetString("Nome")
+                        Id = reader.GetInt32("id_ser"),
+                        Descricao = reader.GetString("descricao_ser"),
+                        Nome = reader.GetString("nome_ser"),
+                        preco = reader.GetDecimal("preco_ser")
+
                     };
                 }
             }
@@ -74,10 +77,12 @@ namespace MiceGym_APIs.DAO
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "INSERT INTO Servicos (Descricao, Nome) VALUES (@Descricao, @Nome)";
+                string query = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preço)";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Descricao", servico.Descricao);
                 command.Parameters.AddWithValue("@Nome", servico.Nome);
+                command.Parameters.AddWithValue("@Preço", servico.preco);
+
                 connection.Open();
 
                 command.ExecuteNonQuery();
@@ -91,11 +96,13 @@ namespace MiceGym_APIs.DAO
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "UPDATE Servicos SET Descricao = @Descricao, Nome = @Nome WHERE Id = @Id";
+                string query = "update servico set descricao_ser = @Descricao, nome_ser = @Nome WHERE id_ser = @Id";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Id", id);
                 command.Parameters.AddWithValue("@Descricao", servico.Descricao);
                 command.Parameters.AddWithValue("@Nome", servico.Nome);
+                command.Parameters.AddWithValue("@Preço", servico.preco);
+
                 connection.Open();
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -107,7 +114,7 @@ namespace MiceGym_APIs.DAO
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "DELETE FROM Servicos WHERE Id = @Id";
+                string query = "delete from servico where id_ser = @Id";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Id", id);
                 connection.Open();
@@ -124,7 +131,7 @@ namespace MiceGym_APIs.DAO
 
             using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "SELECT * FROM Servicos WHERE Nome = @Nome";
+                string query = "select * from servico where nome_ser = @Nome";
                 MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Nome", nome);
                 connection.Open();
@@ -134,9 +141,11 @@ namespace MiceGym_APIs.DAO
                 {
                     servico = new Servico
                     {
-                        Id = reader.GetInt32("Id"),
-                        Descricao = reader.GetString("Descricao"),
-                        Nome = reader.GetString("Nome")
+                        Id = reader.GetInt32("id_ser"),
+                        Descricao = reader.GetString("descricao_ser"),
+                        Nome = reader.GetString("nome_ser"),
+                        preco = reader.GetDecimal("preco_ser")
+
                     };
                 }
             }

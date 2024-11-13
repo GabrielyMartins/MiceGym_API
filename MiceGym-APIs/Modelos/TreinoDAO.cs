@@ -21,7 +21,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO treinos (data, frequencia, exercicios, series_reps, status, tempodesc, observacoes, objetivo, carga) " +
+                query.CommandText = "insert into treino (data_tre, frequencia_tre, exercicios_tre, seriesreps_tre, status_tre, tempodesc_tre, observacoes_tre, objetivo_tre, carga_tre) " +
                                     "VALUES (@data, @frequencia, @exercicios, @series_reps, @status, @tempodesc, @observacoes, @objetivo, @carga)";
 
                 query.Parameters.AddWithValue("@data", treino.Data);
@@ -54,23 +54,23 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM treinos";
+                query.CommandText = "select * from treino";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     treinos.Add(new Treino
                     {
-                        Id = reader.GetInt32("id"),
-                        Data = reader.GetString("data"),
-                        Frequencia = reader.GetString("frequencia"),
-                        Exercicios = reader.GetString("exercicios"),
-                        SeriesReps = reader.GetString("series_reps"),
-                        Status = reader.GetString("status"),
-                        Tempodesc = reader.GetString("tempodesc"),
-                        Observacoes = reader.GetString("observacoes"),
-                        Objetivo = reader.GetString("objetivo"),
-                        Carga = reader.GetString("carga")
+                        Id = reader.GetInt32("id_tre"),
+                        Data = reader.GetString("data_tre"),
+                        Frequencia = reader.GetString("frequencia_tre"),
+                        Exercicios = reader.GetString("exercicios_tre"),
+                        SeriesReps = reader.GetString("series_reps_tre"),
+                        Status = reader.GetString("status_tre"),
+                        Tempodesc = reader.GetString("tempodesc_tre"),
+                        Observacoes = reader.GetString("observacoes_tre"),
+                        Objetivo = reader.GetString("objetivo_tre"),
+                        Carga = reader.GetString("carga_tre")
                     });
                 }
             }
@@ -92,7 +92,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM treinos WHERE id = @id";
+                query.CommandText = "select * from treino where id_tre = @id";
                 query.Parameters.AddWithValue("@id", id);
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -101,16 +101,16 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Treino
                     {
-                        Id = reader.GetInt32("id"),
-                        Data = reader.GetString("data"),
-                        Frequencia = reader.GetString("frequencia"),
-                        Exercicios = reader.GetString("exercicios"),
-                        SeriesReps = reader.GetString("series_reps"),
-                        Status = reader.GetString("status"),
-                        Tempodesc = reader.GetString("tempodesc"),
-                        Observacoes = reader.GetString("observacoes"),
-                        Objetivo = reader.GetString("objetivo"),
-                        Carga = reader.GetString("carga")
+                        Id = reader.GetInt32("id_tre"),
+                        Data = reader.GetString("data_tre"),
+                        Frequencia = reader.GetString("frequencia_tre"),
+                        Exercicios = reader.GetString("exercicios_tre"),
+                        SeriesReps = reader.GetString("seriesreps_tre"),
+                        Status = reader.GetString("status_tre"),
+                        Tempodesc = reader.GetString("tempodesc_tre"),
+                        Observacoes = reader.GetString("observacoes_tre"),
+                        Objetivo = reader.GetString("objetivo_tre"),
+                        Carga = reader.GetString("carga_tre")
                     };
                 }
                 return null;
@@ -131,9 +131,9 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE treinos SET data = @data, frequencia = @frequencia, exercicios = @exercicios, " +
-                                    "series_reps = @series_reps, status = @status, tempodesc = @tempodesc, observacoes = @observacoes, " +
-                                    "objetivo = @objetivo, carga = @carga WHERE id = @id";
+                query.CommandText = "update treino set data_tre = @data, frequencia_tre = @frequencia, exercicios_tre = @exercicios, " +
+                                    "seriesreps_tre = @series_reps, status_tre = @status, tempodesc_tre = @tempodesc, observacoes_tre = @observacoes, " +
+                                    "objetivo_tre = @objetivo, carga_tre = @carga where id_tre = @id";
 
                 query.Parameters.AddWithValue("@data", treino.Data);
                 query.Parameters.AddWithValue("@frequencia", treino.Frequencia);
@@ -164,7 +164,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM treinos WHERE id = @id";
+                query.CommandText = "delete from treino WHERE id_tre = @id";
                 query.Parameters.AddWithValue("@id", id);
 
                 query.ExecuteNonQuery();

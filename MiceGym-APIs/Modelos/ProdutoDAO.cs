@@ -18,7 +18,7 @@ namespace MiceGym_APIs.Modelos
             try
             {
                 var query = conn.Query();
-                query.CommandText = "INSERT INTO produtos (nome, descricao, codigo, preco_compra, preco_venda, quantidade, fornecedor) " +
+                query.CommandText = "insert into produto (nome_pro, descricao_pro, codigo_pro, precocompra_pro, precovenda_pro, quantidade_pro, fornecedor_pro) " +
                                     "VALUES (@nome, @descricao, @codigo, @preco_compra, @preco_venda, @quantidade, @fornecedor)";
 
                 query.Parameters.AddWithValue("@nome", item.Nome);
@@ -55,7 +55,7 @@ namespace MiceGym_APIs.Modelos
                 List<Produto> list = new List<Produto>();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM produtos";
+                query.CommandText = "select * from produto";
 
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -63,14 +63,14 @@ namespace MiceGym_APIs.Modelos
                 {
                     list.Add(new Produto()
                     {
-                        Id = reader.GetInt32("id"),
-                        Nome = reader.GetString("nome"),
-                        Descricao = reader.GetString("descricao"),
-                        Codigo = reader.GetString("codigo"),
-                        PrecoCompra = reader.GetDouble("preco_compra"),
-                        PrecoVenda = reader.GetDouble("preco_venda"),
-                        Quantidade = reader.GetString("quantidade"),
-                        Fornecedor = reader.GetString("fornecedor")
+                        Id = reader.GetInt32("id_pro"),
+                        Nome = reader.GetString("nome_pro"),
+                        Descricao = reader.GetString("descricao_pro"),
+                        Codigo = reader.GetString("codigo_pro"),
+                        PrecoCompra = reader.GetDouble("precocompra_pro"),
+                        PrecoVenda = reader.GetDouble("precovenda_pro"),
+                        Quantidade = reader.GetString("quantidade_pro"),
+                        Fornecedor = reader.GetString("fornecedor_pro")
                     });
                 }
 
@@ -93,7 +93,7 @@ namespace MiceGym_APIs.Modelos
                 Produto produto = new Produto();
 
                 var query = conn.Query();
-                query.CommandText = "SELECT * FROM produtos WHERE id = @id";
+                query.CommandText = "select * from produto where id_pro = @id";
                 query.Parameters.AddWithValue("@id", id);
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -105,14 +105,14 @@ namespace MiceGym_APIs.Modelos
 
                 while (reader.Read())
                 {
-                    produto.Id = reader.GetInt32("id");
-                    produto.Nome = reader.GetString("nome");
-                    produto.Descricao = reader.GetString("descricao");
-                    produto.Codigo = reader.GetString("codigo");
-                    produto.PrecoCompra = reader.GetDouble("preco_compra");
-                    produto.PrecoVenda = reader.GetDouble("preco_venda");
-                    produto.Quantidade = reader.GetString("quantidade");
-                    produto.Fornecedor = reader.GetString("fornecedor");
+                    produto.Id = reader.GetInt32("id_pro");
+                    produto.Nome = reader.GetString("nome_pro");
+                    produto.Descricao = reader.GetString("descricao_pro");
+                    produto.Codigo = reader.GetString("codigo_pro");
+                    produto.PrecoCompra = reader.GetDouble("precocompra_pro");
+                    produto.PrecoVenda = reader.GetDouble("precovenda_pro");
+                    produto.Quantidade = reader.GetString("quantidade_pro");
+                    produto.Fornecedor = reader.GetString("fornecedor_pro");
                 }
 
                 return produto;
@@ -132,8 +132,8 @@ namespace MiceGym_APIs.Modelos
             try
             {
                 var query = conn.Query();
-                query.CommandText = "UPDATE produtos SET nome = @nome, descricao = @descricao, codigo = @codigo, " +
-                                    "preco_compra = @preco_compra, preco_venda = @preco_venda, quantidade = @quantidade, fornecedor = @fornecedor " +
+                query.CommandText = "update produto set nome_pro = @nome, descricao_pro = @descricao, codigo_pro = @codigo, " +
+                                    "precocompra_pro = @preco_compra, precovenda_pro = @preco_venda, quantidade_pro = @quantidade, fornecedor_pro = @fornecedor " +
                                     "WHERE id = @id";
 
                 query.Parameters.AddWithValue("@nome", item.Nome);
@@ -167,7 +167,7 @@ namespace MiceGym_APIs.Modelos
             try
             {
                 var query = conn.Query();
-                query.CommandText = "DELETE FROM produtos WHERE id = @id";
+                query.CommandText = "delete from produtos where id_pro = @id";
                 query.Parameters.AddWithValue("@id", id);
 
                 var result = query.ExecuteNonQuery();

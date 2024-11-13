@@ -21,16 +21,16 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Venda";
+                query.CommandText = "select * from venda";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     vendas.Add(new Venda
                     {
-                        Id = reader.GetInt32("id"),
-                        Data = reader.GetDateTime("data"),
-                        Valor = reader.GetDecimal("valor")
+                        Id = reader.GetInt32("id_ven"),
+                        Data = reader.GetDateTime("data_ven"),
+                        Valor = reader.GetDecimal("valor_ven")
                     });
                 }
                 return vendas;
@@ -50,7 +50,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Venda WHERE id = @id";
+                query.CommandText = "select * from venda where id_ven = @id";
                 query.Parameters.AddWithValue("@id", id);
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -58,9 +58,9 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Venda
                     {
-                        Id = reader.GetInt32("id"),
-                        Data = reader.GetDateTime("data"),
-                        Valor = reader.GetDecimal("valor")
+                        Id = reader.GetInt32("id_ven"),
+                        Data = reader.GetDateTime("data_ven"),
+                        Valor = reader.GetDecimal("valor_ven")
                     };
                 }
                 return null;
@@ -80,7 +80,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO Venda (data, valor) VALUES (@data, @valor)";
+                query.CommandText = "insert into venda (data_ven, valor_ven) VALUES (@data, @valor)";
                 query.Parameters.AddWithValue("@data", venda.Data);
                 query.Parameters.AddWithValue("@valor", venda.Valor);
                 query.ExecuteNonQuery();
@@ -100,7 +100,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE Venda SET data = @data, valor = @valor WHERE id = @id";
+                query.CommandText = "update venda set data_ven = @data, valor_ven = @valor where id_ven = @id";
                 query.Parameters.AddWithValue("@data", venda.Data);
                 query.Parameters.AddWithValue("@valor", venda.Valor);
                 query.Parameters.AddWithValue("@id", venda.Id);
@@ -121,7 +121,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM Venda WHERE id = @id";
+                query.CommandText = "delete from venda where id_ven = @id";
                 query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
             }

@@ -21,17 +21,17 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Plano";
+                query.CommandText = "select * from plano";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     planos.Add(new Plano
                     {
-                        CodPlano = reader.GetInt32("cod_plano"),
+                        Id = reader.GetInt32("id_plano"),
                         NomePlano = reader.GetString("nome_plano"),
-                        Preco = reader.GetDecimal("preco"),
-                        Duracao = reader.GetInt32("duracao")
+                        Preco = reader.GetDecimal("preco_plano"),
+                        Duracao = reader.GetInt32("duracao_plano")
                     });
                 }
                 return planos;
@@ -51,18 +51,18 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Plano WHERE cod_plano = @cod_plano";
-                query.Parameters.AddWithValue("@cod_plano", codPlano);
+                query.CommandText = "select * from plano where id_plano = @id";
+                query.Parameters.AddWithValue("@id", codPlano);
                 MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
                 {
                     return new Plano
                     {
-                        CodPlano = reader.GetInt32("cod_plano"),
+                        Id = reader.GetInt32("id_plano"),
                         NomePlano = reader.GetString("nome_plano"),
-                        Preco = reader.GetDecimal("preco"),
-                        Duracao = reader.GetInt32("duracao")
+                        Preco = reader.GetDecimal("preco_plano"),
+                        Duracao = reader.GetInt32("duracao_plano")
                     };
                 }
                 return null;
@@ -82,11 +82,11 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO Plano (nome_plano, preco, duracao) " +
+                query.CommandText = "insert into plano (nome_plano, preco_plano, duracao_plano) " +
                                     "VALUES (@nome_plano, @preco, @duracao)";
                 query.Parameters.AddWithValue("@nome_plano", plano.NomePlano);
-                query.Parameters.AddWithValue("@preco", plano.Preco);
-                query.Parameters.AddWithValue("@duracao", plano.Duracao);
+                query.Parameters.AddWithValue("@preco_plano", plano.Preco);
+                query.Parameters.AddWithValue("@duracao_plano", plano.Duracao);
                 query.ExecuteNonQuery();
             }
             catch (Exception)
@@ -104,12 +104,12 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE Plano SET nome_plano = @nome_plano, preco = @preco, duracao = @duracao " +
-                                    "WHERE cod_plano = @cod_plano";
+                query.CommandText = "update plano set nome_plano = @nome_plano, preco_plano = @preco, duracao_plano = @duracao " +
+                                    "where id_plano = @cod_plano";
                 query.Parameters.AddWithValue("@nome_plano", plano.NomePlano);
                 query.Parameters.AddWithValue("@preco", plano.Preco);
                 query.Parameters.AddWithValue("@duracao", plano.Duracao);
-                query.Parameters.AddWithValue("@cod_plano", plano.CodPlano);
+                query.Parameters.AddWithValue("@id", plano.Id);
                 query.ExecuteNonQuery();
             }
             catch (Exception)
@@ -127,8 +127,8 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM Plano WHERE cod_plano = @cod_plano";
-                query.Parameters.AddWithValue("@cod_plano", codPlano);
+                query.CommandText = "delete from plano where id_plano = @id";
+                query.Parameters.AddWithValue("@id", codPlano);
                 query.ExecuteNonQuery();
             }
             catch (Exception)

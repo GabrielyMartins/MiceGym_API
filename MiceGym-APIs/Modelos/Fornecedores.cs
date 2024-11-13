@@ -1,6 +1,6 @@
 ﻿namespace MiceGym_APIs.Modelos
 {
-    public class Fornecedores
+    public class Fornecedor
     {
         public int Id { get; set; }
         public string NomeFantasia { get; set; }

@@ -20,8 +20,8 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO cliente (nome, cpf, rg, data_nascimento, sexo, telefone, endereco, cidade, estado, email) " +
-                                    "VALUES (@nome, @cpf, @rg, @data_nascimento, @sexo, @telefone, @endereco, @cidade, @estado, @email)";
+                query.CommandText = "insert into cliente (nome_cli, datanascimento_cli, rg_cli, cpf_cli, sexo_cli, email_cli, telefone_cli, uf_cli, cidade_cli, bairro_cli, numero_cli, cep_cli) " +
+                                    "VALUES (@nome, @data_nascimento, @rg, @cpf, @sexo, @email, @telefone, @uf, @cidade, @bairro, @numero, @cep)";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
                 query.Parameters.AddWithValue("@cpf", cliente.CPF);
@@ -56,22 +56,26 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM cliente";
+                query.CommandText = "select * from cliente";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     clientes.Add(new Cliente
                     {
-                        Nome = reader.GetString("nome"),
-                        CPF = reader.GetString("cpf"),
-                        RG = reader.GetString("rg"),
-                        DataNascimento = reader.GetDateTime("data_nascimento"),
-                        Sexo = reader.GetString("sexo"),
-                        Telefone = reader.GetString("telefone"),
-                        Cidade = reader.GetString("cidade"),
-                        UF = reader.GetString("estado"),
-                        Email = reader.GetString("email")
+                        Nome = reader.GetString("nome_cli"),
+                        DataNascimento = reader.GetDateTime("datanascimento_cli"),
+                        CPF = reader.GetString("cpf_cli"),
+                        RG = reader.GetString("rg_cli"),
+                        Sexo = reader.GetString("sexo_cli"),
+                        Email = reader.GetString("email_cli"),
+                        Telefone = reader.GetString("telefone_cli"),
+                        UF = reader.GetString("uf_cli"),
+                        Cidade = reader.GetString("cidade_cli"),
+                        Bairro = reader.GetString("bairro_cli"),
+                        Numero = reader.GetString("numero_cli"),
+                        CEP = reader.GetString("cep_cli"),
+
                     });
                 }
             }
@@ -92,7 +96,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM cliente WHERE cpf_cli = @cpf";
+                query.CommandText = "select * from cliente where cpf_cli = @cpf";
                 query.Parameters.AddWithValue("@cpf", cpf);
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -101,15 +105,18 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Cliente
                     {
-                        Nome = reader.GetString("nome"),
-                        CPF = reader.GetString("cpf"),
-                        RG = reader.GetString("rg"),
-                        DataNascimento = reader.GetDateTime("data_nascimento"),
-                        Sexo = reader.GetString("sexo"),
-                        Telefone = reader.GetString("telefone"),
-                        Cidade = reader.GetString("cidade"),
-                        UF = reader.GetString("estado"),
-                        Email = reader.GetString("email")
+                        Nome = reader.GetString("nome_cli"),
+                        DataNascimento = reader.GetDateTime("datanascimento_cli"),
+                        CPF = reader.GetString("cpf_cli"),
+                        RG = reader.GetString("rg_cli"),
+                        Sexo = reader.GetString("sexo_cli"),
+                        Email = reader.GetString("email_cli"),
+                        Telefone = reader.GetString("telefone_cli"),
+                        UF = reader.GetString("uf_cli"),
+                        Cidade = reader.GetString("cidade_cli"),
+                        Bairro = reader.GetString("bairro_cli"),
+                        Numero = reader.GetString("numero_cli"),
+                        CEP = reader.GetString("cep_cli"),
                     };
                 }
                 return null;
@@ -129,18 +136,21 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE cliente SET nome = @nome, rg = @rg, data_nascimento = @data_nascimento, sexo = @sexo, " +
-                                    "telefone = @telefone, endereco = @endereco, cidade = @cidade, estado = @estado, email = @email " +
+                query.CommandText = "UPDATE cliente SET nome_cli = @nome, datanascimento_cli = @data_nascimento, rg_cli = @rg, sexo_cli = @sexo, " +
+                                    "email = @email, telefone_cli = @telefone, uf_cli = @uf, cidade_cli = @cidade, bairro_cli = @bairro, numero_cli = @numero, cep_cli = @cep " +
                                     "WHERE cpf = @cpf";
 
                 query.Parameters.AddWithValue("@nome", cliente.Nome);
-                query.Parameters.AddWithValue("@rg", cliente.RG);
                 query.Parameters.AddWithValue("@data_nascimento", cliente.DataNascimento);
+                query.Parameters.AddWithValue("@rg", cliente.RG);
                 query.Parameters.AddWithValue("@sexo", cliente.Sexo);
-                query.Parameters.AddWithValue("@telefone", cliente.Telefone);
-                query.Parameters.AddWithValue("@cidade", cliente.Cidade);
-                query.Parameters.AddWithValue("@estado", cliente.UF);
                 query.Parameters.AddWithValue("@email", cliente.Email);
+                query.Parameters.AddWithValue("@telefone", cliente.Telefone);
+                query.Parameters.AddWithValue("@uf", cliente.UF);
+                query.Parameters.AddWithValue("@cidade", cliente.Cidade);
+                query.Parameters.AddWithValue("@bairro", cliente.Bairro);
+                query.Parameters.AddWithValue("@numero", cliente.Numero);
+                query.Parameters.AddWithValue("@cep", cliente.CEP);
                 query.Parameters.AddWithValue("@cpf", cliente.CPF);
 
                 query.ExecuteNonQuery();
@@ -160,7 +170,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM cliente WHERE cpf = @cpf";
+                query.CommandText = "delete from cliente where cpf_cli = @cpf";
                 query.Parameters.AddWithValue("@cpf", cpf);
 
                 query.ExecuteNonQuery();

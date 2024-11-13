@@ -21,17 +21,17 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Despesa";
+                query.CommandText = "SELECT * FROM despesa";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     despesas.Add(new Despesa
                     {
-                        Id = reader.GetInt32("id"),
-                        Valor = reader.GetDecimal("valor"),
-                        Data = reader.GetDateTime("data"),
-                        Descricao = reader.GetString("descricao")
+                        Id = reader.GetInt32("id_des"),
+                        Valor = reader.GetDecimal("valor_des"),
+                        Data = reader.GetDateTime("data_des"),
+                        Descricao = reader.GetString("descricao_des")
                     });
                 }
                 return despesas;
@@ -51,7 +51,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM Despesa WHERE id = @id";
+                query.CommandText = "select * from despesa where id_des = @id";
                 query.Parameters.AddWithValue("@id", id);
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -59,10 +59,10 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Despesa
                     {
-                        Id = reader.GetInt32("id"),
-                        Valor = reader.GetDecimal("valor"),
-                        Data = reader.GetDateTime("data"),
-                        Descricao = reader.GetString("descricao")
+                        Id = reader.GetInt32("id_des"),
+                        Valor = reader.GetDecimal("valor_des"),
+                        Data = reader.GetDateTime("data_des"),
+                        Descricao = reader.GetString("descricao_des")
                     };
                 }
                 return null;
@@ -82,7 +82,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO Despesa (valor, data, descricao) " +
+                query.CommandText = "insert into despesa (valor_des, data_des, descricao_des) " +
                                     "VALUES (@valor, @data, @descricao)";
                 query.Parameters.AddWithValue("@valor", despesa.Valor);
                 query.Parameters.AddWithValue("@data", despesa.Data);
@@ -104,8 +104,8 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE Despesa SET valor = @valor, data = @data, descricao = @descricao " +
-                                    "WHERE id = @id";
+                query.CommandText = "update despesa set valor_des = @valor, data_des = @data, descricao_des = @descricao " +
+                                    "WHERE id_des = @id";
                 query.Parameters.AddWithValue("@valor", despesa.Valor);
                 query.Parameters.AddWithValue("@data", despesa.Data);
                 query.Parameters.AddWithValue("@descricao", despesa.Descricao);
@@ -127,7 +127,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM Despesa WHERE id = @id";
+                query.CommandText = "delete from despesa where id_des = @id";
                 query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
             }

@@ -20,7 +20,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO caixas (saldo_inicial, data_abertura, data_fechamento, saldo_final) " +
+                query.CommandText = "insert into caixa (saldoinicial_cai, dataabertura_cai, datafechamento_cai, saldofinal_cai) " +
                                     "VALUES (@saldo_inicial, @data_abertura, @data_fechamento, @saldo_final)";
 
                 query.Parameters.AddWithValue("@saldo_inicial", caixa.SaldoInicial);
@@ -47,7 +47,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM caixas";
+                query.CommandText = "select * from caixa";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
@@ -55,10 +55,10 @@ namespace MiceGym_APIs.DAO
                     lista.Add(new Caixa
                     {
                         Id = reader.GetInt32("id"),
-                        SaldoInicial = reader.GetDecimal("saldo_inicial"),
-                        DataAbertura = reader.GetDateTime("data_abertura"),
-                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("data_fechamento")) ? (DateTime?)null : reader.GetDateTime("data_fechamento"),
-                        SaldoFinal = reader.GetDecimal("saldo_final")
+                        SaldoInicial = reader.GetDecimal("saldoinicial_cai"),
+                        DataAbertura = reader.GetDateTime("dataabertura_cai"),
+                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("datafechamento_cai")) ? (DateTime?)null : reader.GetDateTime("data_fechamento_cai"),
+                        SaldoFinal = reader.GetDecimal("saldofinal_cai")
                     });
                 }
                 return lista;
@@ -78,7 +78,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM caixas WHERE id = @id";
+                query.CommandText = "select * from caixa where id_cai = @id";
                 query.Parameters.AddWithValue("@id", id);
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -86,11 +86,11 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Caixa
                     {
-                        Id = reader.GetInt32("id"),
-                        SaldoInicial = reader.GetDecimal("saldo_inicial"),
-                        DataAbertura = reader.GetDateTime("data_abertura"),
-                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("data_fechamento")) ? (DateTime?)null : reader.GetDateTime("data_fechamento"),
-                        SaldoFinal = reader.GetDecimal("saldo_final")
+                        Id = reader.GetInt32("id_cai"),
+                        SaldoInicial = reader.GetDecimal("saldoinicial_cai"),
+                        DataAbertura = reader.GetDateTime("dataabertura_cai"),
+                        DataFechamento = reader.IsDBNull(reader.GetOrdinal("datafechamento_cai")) ? (DateTime?)null : reader.GetDateTime("datafechamento_cai"),
+                        SaldoFinal = reader.GetDecimal("saldofinal_cai")
                     };
                 }
                 return null;
@@ -110,8 +110,8 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE caixas SET saldo_inicial = @saldo_inicial, data_abertura = @data_abertura, " +
-                                    "data_fechamento = @data_fechamento, saldo_final = @saldo_final WHERE id = @id";
+                query.CommandText = "update caixa set saldoinicial_cai = @saldo_inicial, dataabertura_cai = @data_abertura, " +
+                                    "datafechamento_cai = @data_fechamento, saldofinal_cai = @saldo_final where id_cai = @id";
                 query.Parameters.AddWithValue("@saldo_inicial", caixa.SaldoInicial);
                 query.Parameters.AddWithValue("@data_abertura", caixa.DataAbertura);
                 query.Parameters.AddWithValue("@data_fechamento", caixa.DataFechamento);
@@ -134,7 +134,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM caixas WHERE id = @id";
+                query.CommandText = "delete from caixa where id_cai = @id";
                 query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
             }

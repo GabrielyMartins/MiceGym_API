@@ -22,19 +22,19 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM equipamentos";
+                query.CommandText = "select * from equipamentos";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
                     equipamentos.Add(new Equipamento
                     {
-                        Nome = reader.GetString("nome"),
-                        Descricao = reader.GetString("descricao"),
-                        Codigo = reader.GetString("codigo"),
-                        Quantidade = reader.GetInt32("quantidade"),
-                        Valor = reader.GetDouble("valor"),
-                        Fornecedor = reader.GetString("fornecedor")
+                        Nome = reader.GetString("nome_equi"),
+                        Descricao = reader.GetString("descricao_equi"),
+                        Codigo = reader.GetString("codigo_equi"),
+                        Quantidade = reader.GetInt32("quantidade_equi"),
+                        Valor = reader.GetDouble("valor_equi"),
+                        Fornecedor = reader.GetString("fornecedor_equi)
                     });
                 }
                 return equipamentos;
@@ -54,7 +54,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM equipamentos WHERE codigo = @codigo";
+                query.CommandText = "select * from equipamentos where codigo_equi = @codigo";
                 query.Parameters.AddWithValue("@codigo", codigo);
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -62,12 +62,12 @@ namespace MiceGym_APIs.DAO
                 {
                     return new Equipamento
                     {
-                        Nome = reader.GetString("nome"),
-                        Descricao = reader.GetString("descricao"),
-                        Codigo = reader.GetString("codigo"),
-                        Quantidade = reader.GetInt32("quantidade"),
-                        Valor = reader.GetDouble("valor"),
-                        Fornecedor = reader.GetString("fornecedor")
+                        Nome = reader.GetString("nome_equi"),
+                        Descricao = reader.GetString("descricao_equi"),
+                        Codigo = reader.GetString("codigo_equi"),
+                        Quantidade = reader.GetInt32("quantidade_equi"),
+                        Valor = reader.GetDouble("valor_equi"),
+                        Fornecedor = reader.GetString("fornecedor_equi")
                     };
                 }
                 return null;
@@ -87,7 +87,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO equipamentos (nome, descricao, codigo, quantidade, valor, fornecedor) " +
+                query.CommandText = "insert into equipamentos (nome_equi, descricao_equi, codigo_equi, quantidade_equi, valor_equi, fornecedor_equi) " +
                                     "VALUES (@nome, @descricao, @codigo, @quantidade, @valor, @fornecedor)";
                 query.Parameters.AddWithValue("@nome", equipamento.Nome);
                 query.Parameters.AddWithValue("@descricao", equipamento.Descricao);
@@ -112,8 +112,8 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE equipamentos SET nome = @nome, descricao = @descricao, quantidade = @quantidade, " +
-                                    "valor = @valor, fornecedor = @fornecedor WHERE codigo = @codigo";
+                query.CommandText = "update equipamentos set nome_equi = @nome, descricao_equi = @descricao, quantidade_equi = @quantidade, " +
+                                    "valor_equi = @valor, fornecedor_equi = @fornecedor where codigo_equi = @codigo";
                 query.Parameters.AddWithValue("@nome", equipamento.Nome);
                 query.Parameters.AddWithValue("@descricao", equipamento.Descricao);
                 query.Parameters.AddWithValue("@quantidade", equipamento.Quantidade);
@@ -137,7 +137,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM equipamentos WHERE codigo = @codigo";
+                query.CommandText = "delete from equipamentos where codigo_equi = @codigo";
                 query.Parameters.AddWithValue("@codigo", codigo);
                 query.ExecuteNonQuery();
             }

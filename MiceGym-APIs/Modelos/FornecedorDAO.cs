@@ -15,28 +15,28 @@ namespace MiceGym_APIs.DAO
             _conn = new ConnectionMysql();
         }
 
-        public List<Fornecedores> List()
+        public List<Fornecedor> List()
         {
-            List<Fornecedores> fornecedores = new List<Fornecedores>();
+            List<Fornecedor> fornecedores = new List<Fornecedor>();
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM fornecedores";
+                query.CommandText = "select * from fornecedor";
                 MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    fornecedores.Add(new Fornecedores
+                    fornecedores.Add(new Fornecedor
                     {
-                        NomeFantasia = reader.GetString("nome_fantasia"),
-                        RazaoSocial = reader.GetString("razao_social"),
-                        CNPJ = reader.GetString("cnpj"),
-                        Endereco = reader.GetString("endereco"),
-                        Cidade = reader.GetString("cidade"),
-                        Estado = reader.GetString("estado"),
-                        Telefone = reader.GetString("telefone"),
-                        Email = reader.GetString("email"),
-                        Responsavel = reader.GetString("responsavel")
+                        NomeFantasia = reader.GetString("nomefantasia_forn"),
+                        RazaoSocial = reader.GetString("razaosocial_forn"),
+                        CNPJ = reader.GetString("cnpj_forn"),
+                        Endereco = reader.GetString("endereco_forn"),
+                        Cidade = reader.GetString("cidade_forn"),
+                        Estado = reader.GetString("estado_forn"),
+                        Telefone = reader.GetString("telefone_forn"),
+                        Email = reader.GetString("email_forn"),
+                        Responsavel = reader.GetString("responsavel_forn")
                     });
                 }
                 return fornecedores;
@@ -51,28 +51,28 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public Fornecedores? GetByCNPJ(string cnpj)
+        public Fornecedor? GetByCNPJ(string cnpj)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM fornecedores WHERE cnpj = @cnpj";
+                query.CommandText = "select * from fornecedor where cnpj_forn = @cnpj";
                 query.Parameters.AddWithValue("@cnpj", cnpj);
                 MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    return new Fornecedores
+                    return new Fornecedor
                     {
-                        NomeFantasia = reader.GetString("nome_fantasia"),
-                        RazaoSocial = reader.GetString("razao_social"),
-                        CNPJ = reader.GetString("cnpj"),
-                        Endereco = reader.GetString("endereco"),
-                        Cidade = reader.GetString("cidade"),
-                        Estado = reader.GetString("estado"),
-                        Telefone = reader.GetString("telefone"),
-                        Email = reader.GetString("email"),
-                        Responsavel = reader.GetString("responsavel")
+                        NomeFantasia = reader.GetString("nomefantasia_forn"),
+                        RazaoSocial = reader.GetString("razaosocial_forn"),
+                        CNPJ = reader.GetString("cnpj_forn"),
+                        Endereco = reader.GetString("endereco_forn"),
+                        Cidade = reader.GetString("cidade_forn"),
+                        Estado = reader.GetString("estado_forn"),
+                        Telefone = reader.GetString("telefone_forn"),
+                        Email = reader.GetString("email_forn"),
+                        Responsavel = reader.GetString("responsavel_forn")
                     };
                 }
                 return null;
@@ -87,12 +87,12 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public void Insert(Fornecedores fornecedor)
+        public void Insert(Fornecedor fornecedor)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "INSERT INTO fornecedores (nome_fantasia, razao_social, cnpj, endereco, cidade, estado, telefone, email, responsavel) " +
+                query.CommandText = "insert into fornecedor (nomefantasia_forn, razaosocial_forn, cnpj_forn, endereco_forn, cidade_forn, estado_forn, telefone_forn, email_forn, responsavel_forn) " +
                                     "VALUES (@nomeFantasia, @razaoSocial, @cnpj, @endereco, @cidade, @estado, @telefone, @email, @responsavel)";
                 query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
@@ -115,13 +115,13 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public void Update(Fornecedores fornecedor)
+        public void Update(Fornecedor fornecedor)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "UPDATE fornecedores SET nome_fantasia = @nomeFantasia, razao_social = @razaoSocial, endereco = @endereco, " +
-                                    "cidade = @cidade, estado = @estado, telefone = @telefone, email = @email, responsavel = @responsavel " +
+                query.CommandText = "update fornecedor set nomefantasia_forn = @nomeFantasia, razaosocial_forn = @razaoSocial, endereco_forn = @endereco, " +
+                                    "cidade_forn = @cidade, estado_forn = @estado, telefone_forn = @telefone, email_forn = @email, responsavel_forn = @responsavel " +
                                     "WHERE cnpj = @cnpj";
                 query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
@@ -149,7 +149,7 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM fornecedores WHERE cnpj = @cnpj";
+                query.CommandText = "delete from fornecedor where cnpj_forn = @cnpj";
                 query.Parameters.AddWithValue("@cnpj", cnpj);
                 query.ExecuteNonQuery();
             }
