@@ -1,6 +1,6 @@
-﻿using MiceGym_APIs.DTOS;
+﻿using MiceGym_APIs.DAO;
+using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
-using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -12,88 +12,110 @@ namespace MiceGym_APIs.Controllers
     {
         private readonly EquipamentoDAO _equipamentoDAO;
 
-        public EquipamentoController()
+        public EquipamentoController(EquipamentoDAO equipamentoDAO)
         {
-            _equipamentoDAO = new EquipamentoDAO();
+            _equipamentoDAO = equipamentoDAO;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
             var equipamentos = _equipamentoDAO.List();
+            if (equipamentos == null || !equipamentos.Any())
+            {
+                return NotFound("Nenhum equipamento encontrado.");
+            }
             return Ok(equipamentos);
         }
 
-        [HttpGet("{codigo}")]
-        public IActionResult GetByCodigo(string codigo)
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
         {
-            var equipamento = _equipamentoDAO.GetByCodigo(codigo);
-
+            var equipamento = _equipamentoDAO.GetById(id);
             if (equipamento == null)
             {
-                return NotFound();
+                return NotFound($"Equipamento com ID {id} não encontrado.");
             }
-
             return Ok(equipamento);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] EquipamentoDTO dto)
+        public IActionResult Post([FromBody] EquipamentoDTO equipamentoDTO)
         {
-            if (dto == null)
+            if (equipamentoDTO == null || string.IsNullOrWhiteSpace(equipamentoDTO.Nome))
             {
-                return BadRequest("Dados inválidos.");
+                return BadRequest("Dados inválidos. O nome do equipamento é obrigatório.");
             }
 
             var equipamento = new Equipamento
             {
-                Nome = dto.Nome,
-                Descricao = dto.Descricao,
-                Codigo = dto.Codigo,
-                Quantidade = dto.Quantidade,
-                Valor = dto.Valor,
-                Fornecedor = dto.Fornecedor
+                Nome = equipamentoDTO.Nome.Trim(),
+                Descricao = equipamentoDTO.Descricao?.Trim() ?? string.Empty,
+                Codigo = equipamentoDTO.Codigo?.Trim() ?? string.Empty,
+                Quantidade = equipamentoDTO.Quantidade > 0 ? equipamentoDTO.Quantidade : 0,
+                Valor = equipamentoDTO.Valor > 0 ? equipamentoDTO.Valor : 0
             };
 
-            _equipamentoDAO.Insert(equipamento);
-
-            return CreatedAtAction(nameof(GetByCodigo), new { codigo = equipamento.Codigo }, equipamento);
+            try
+            {
+                var novoId = _equipamentoDAO.Insert(equipamento);
+                return CreatedAtAction(nameof(GetById), new { id = novoId }, equipamento);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao inserir equipamento: {ex.Message}");
+            }
         }
 
-        [HttpPut("{codigo}")]
-        public IActionResult Put(string codigo, [FromBody] EquipamentoDTO dto)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] EquipamentoDTO equipamentoDTO)
         {
-            var equipamentoExistente = _equipamentoDAO.GetByCodigo(codigo);
+            if (equipamentoDTO == null)
+            {
+                return BadRequest("Dados inválidos.");
+            }
 
+            var equipamentoExistente = _equipamentoDAO.GetById(id);
             if (equipamentoExistente == null)
             {
-                return NotFound();
+                return NotFound($"Equipamento com ID {id} não encontrado.");
             }
 
-            equipamentoExistente.Nome = dto.Nome ?? equipamentoExistente.Nome;
-            equipamentoExistente.Descricao = dto.Descricao ?? equipamentoExistente.Descricao;
-            equipamentoExistente.Quantidade = dto.Quantidade > 0 ? dto.Quantidade : equipamentoExistente.Quantidade;
-            equipamentoExistente.Valor = dto.Valor > 0 ? dto.Valor : equipamentoExistente.Valor;
-            equipamentoExistente.Fornecedor = dto.Fornecedor ?? equipamentoExistente.Fornecedor;
+            equipamentoExistente.Nome = !string.IsNullOrWhiteSpace(equipamentoDTO.Nome) ? equipamentoDTO.Nome.Trim() : equipamentoExistente.Nome;
+            equipamentoExistente.Descricao = equipamentoDTO.Descricao ?? equipamentoExistente.Descricao;
+            equipamentoExistente.Codigo = equipamentoDTO.Codigo ?? equipamentoExistente.Codigo;
+            equipamentoExistente.Quantidade = equipamentoDTO.Quantidade > 0 ? equipamentoDTO.Quantidade : equipamentoExistente.Quantidade;
+            equipamentoExistente.Valor = equipamentoDTO.Valor > 0 ? equipamentoDTO.Valor : equipamentoExistente.Valor;
 
-            _equipamentoDAO.Update(equipamentoExistente);
-
-            return Ok(equipamentoExistente);
+            try
+            {
+                _equipamentoDAO.Update(equipamentoExistente);
+                return Ok(equipamentoExistente);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao atualizar equipamento: {ex.Message}");
+            }
         }
 
-        [HttpDelete("{codigo}")]
-        public IActionResult Delete(string codigo)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            var equipamento = _equipamentoDAO.GetByCodigo(codigo);
-
+            var equipamento = _equipamentoDAO.GetById(id);
             if (equipamento == null)
             {
-                return NotFound();
+                return NotFound($"Equipamento com ID {id} não encontrado.");
             }
 
-            _equipamentoDAO.Delete(codigo);
-
-            return NoContent();
+            try
+            {
+                _equipamentoDAO.Delete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao deletar equipamento: {ex.Message}");
+            }
         }
     }
 }

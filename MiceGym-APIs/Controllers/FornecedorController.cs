@@ -3,6 +3,10 @@ using MiceGym_APIs.Modelos;
 using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 
 namespace MiceGym_APIs.Controllers
 {
@@ -17,7 +21,6 @@ namespace MiceGym_APIs.Controllers
             _fornecedorDAO = new FornecedorDAO();
         }
 
-       
         [HttpGet]
         public IActionResult Get()
         {
@@ -63,7 +66,7 @@ namespace MiceGym_APIs.Controllers
                 return Conflict("Fornecedor existente.");
             }
 
-            var fornecedor = new Fornecedores
+            var fornecedor = new Fornecedor
             {
                 NomeFantasia = dto.NomeFantasia,
                 RazaoSocial = dto.RazaoSocial,
@@ -81,7 +84,6 @@ namespace MiceGym_APIs.Controllers
             return CreatedAtAction(nameof(GetByCNPJ), new { cnpj = fornecedor.CNPJ }, fornecedor);
         }
 
-       
         [HttpPut("{cnpj}")]
         public IActionResult Put(string cnpj, [FromBody] FornecedorDTO dto)
         {
@@ -97,25 +99,20 @@ namespace MiceGym_APIs.Controllers
                 return NotFound();
             }
 
-            var fornecedorAtualizado = new Fornecedores
-            {
-                NomeFantasia = dto.NomeFantasia ?? fornecedorExistente.NomeFantasia,
-                RazaoSocial = dto.RazaoSocial ?? fornecedorExistente.RazaoSocial,
-                CNPJ = cnpj,  
-                Endereco = dto.Endereco ?? fornecedorExistente.Endereco,
-                Cidade = dto.Cidade ?? fornecedorExistente.Cidade,
-                Estado = dto.Estado ?? fornecedorExistente.Estado,
-                Telefone = dto.Telefone ?? fornecedorExistente.Telefone,
-                Email = dto.Email ?? fornecedorExistente.Email,
-                Responsavel = dto.Responsavel ?? fornecedorExistente.Responsavel
-            };
+            fornecedorExistente.NomeFantasia = dto.NomeFantasia ?? fornecedorExistente.NomeFantasia;
+            fornecedorExistente.RazaoSocial = dto.RazaoSocial ?? fornecedorExistente.RazaoSocial;
+            fornecedorExistente.Endereco = dto.Endereco ?? fornecedorExistente.Endereco;
+            fornecedorExistente.Cidade = dto.Cidade ?? fornecedorExistente.Cidade;
+            fornecedorExistente.Estado = dto.Estado ?? fornecedorExistente.Estado;
+            fornecedorExistente.Telefone = dto.Telefone ?? fornecedorExistente.Telefone;
+            fornecedorExistente.Email = dto.Email ?? fornecedorExistente.Email;
+            fornecedorExistente.Responsavel = dto.Responsavel ?? fornecedorExistente.Responsavel;
 
-            _fornecedorDAO.Update(fornecedorAtualizado);
+            _fornecedorDAO.Update(fornecedorExistente);
 
-            return Ok(fornecedorAtualizado);
+            return Ok(fornecedorExistente);
         }
 
-        
         [HttpDelete("{cnpj}")]
         public IActionResult Delete(string cnpj)
         {
@@ -136,11 +133,46 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedor);
         }
 
-       
         private bool ValidarCNPJ(string cnpj)
         {
-            cnpj = System.Text.RegularExpressions.Regex.Replace(cnpj, @"\D", "");
-            return cnpj.Length == 14;
+            cnpj = Regex.Replace(cnpj, @"[^\d]", ""); 
+
+            if (cnpj.Length != 14)
+                return false;
+
+            int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            string tempCnpj, digito;
+            int soma, resto;
+
+            tempCnpj = cnpj.Substring(0, 12);
+            soma = 0;
+
+            for (int i = 0; i < 12; i++)
+                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
+
+            resto = (soma % 11);
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+
+            digito = resto.ToString();
+            tempCnpj += digito;
+            soma = 0;
+
+            for (int i = 0; i < 13; i++)
+                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador2[i];
+
+            resto = (soma % 11);
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+
+            digito += resto.ToString();
+
+            return cnpj.EndsWith(digito);
         }
     }
 }

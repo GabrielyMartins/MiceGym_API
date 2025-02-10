@@ -21,7 +21,7 @@ namespace MiceGym_APIs.Controllers
         public IActionResult List()
         {
             var clientes = _dao.List();
-            var clienteDTOs = clientes.Select(c => new ClienteDOTS
+            var clienteDTOs = clientes.Select(c => new ClienteDTO
             {
                 Nome = c.Nome,
                 CPF = c.CPF,
@@ -30,7 +30,11 @@ namespace MiceGym_APIs.Controllers
                 Sexo = c.Sexo,
                 Telefone = c.Telefone,
                 Cidade = c.Cidade,
-                Email = c.Email
+                Email = c.Email,
+                UF = c.UF,
+                Bairro = c.Bairro,
+                Numero = c.Numero,
+                CEP = c.CEP
             }).ToList();
 
             return Ok(clienteDTOs);
@@ -43,7 +47,7 @@ namespace MiceGym_APIs.Controllers
             if (cliente == null)
                 return NotFound("Cliente não encontrado.");
 
-            var clienteDTO = new ClienteDOTS
+            var clienteDTO = new ClienteDTO
             {
                 Nome = cliente.Nome,
                 CPF = cliente.CPF,
@@ -52,14 +56,18 @@ namespace MiceGym_APIs.Controllers
                 Sexo = cliente.Sexo,
                 Telefone = cliente.Telefone,
                 Cidade = cliente.Cidade,
-                Email = cliente.Email
+                Email = cliente.Email,
+                UF = cliente.UF,
+                Bairro = cliente.Bairro,
+                Numero = cliente.Numero,
+                CEP = cliente.CEP
             };
 
             return Ok(clienteDTO);
         }
 
         [HttpPost]
-        public IActionResult Create(ClienteDOTS dto)
+        public IActionResult Create(ClienteDTO dto)
         {
             if (dto == null)
                 return BadRequest("Dados inválidos. Verifique novamente!");
@@ -88,7 +96,7 @@ namespace MiceGym_APIs.Controllers
         }
 
         [HttpPut("{cpf}")]
-        public IActionResult Update(string cpf, ClienteDOTS dto)
+        public IActionResult Update(string cpf, ClienteDTO dto)
         {
             var cliente = _dao.GetByCPF(cpf);
             if (cliente == null)
@@ -101,19 +109,24 @@ namespace MiceGym_APIs.Controllers
             cliente.Telefone = dto.Telefone ?? cliente.Telefone;
             cliente.Cidade = dto.Cidade ?? cliente.Cidade;
             cliente.Email = dto.Email ?? cliente.Email;
+            cliente.UF = dto.UF ?? cliente.UF;
+            cliente.Bairro = dto.Bairro ?? cliente.Bairro;
+            cliente.Numero = dto.Numero ?? cliente.Numero;
+            cliente.CEP = dto.CEP ?? cliente.CEP;
 
-            _dao.Update(cliente);
-            return Ok(dto);
+            bool updated = _dao.Update(cliente);
+            if (!updated)
+                return BadRequest("Falha ao atualizar cliente.");
+
+            return Ok("Cliente atualizado com sucesso.");
         }
 
         [HttpDelete("{cpf}")]
         public IActionResult Delete(string cpf)
         {
-            var cliente = _dao.GetByCPF(cpf);
-            if (cliente == null)
+            if (!_dao.Delete(cpf))
                 return NotFound("Cliente não encontrado.");
 
-            _dao.Delete(cpf);
             return Ok("Cliente excluído com sucesso.");
         }
     }

@@ -1,15 +1,19 @@
+using MiceGym_APIs.DAO;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Adicione os serviços necessários
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Registro do CaixaDAO
+builder.Services.AddTransient<CaixaDAO>();
+builder.Services.AddTransient<ClienteDAO>();
+builder.Services.AddScoped<EquipamentoDAO>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

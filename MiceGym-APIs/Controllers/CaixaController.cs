@@ -62,6 +62,12 @@ namespace MiceGym_APIs.Controllers
                 return BadRequest("Dados inválidos.");
             }
 
+            var caixa = _caixaDAO.GetById(id);
+            if (caixa == null)
+            {
+                return NotFound();
+            }
+
             var caixaAtualizado = new Caixa
             {
                 Id = id,
@@ -70,12 +76,6 @@ namespace MiceGym_APIs.Controllers
                 DataFechamento = caixaDTO.DataFechamento,
                 SaldoFinal = caixaDTO.SaldoFinal
             };
-
-            var caixa = _caixaDAO.GetById(id);
-            if (caixa == null)
-            {
-                return NotFound();
-            }
 
             _caixaDAO.Update(caixaAtualizado);
             return Ok(caixaAtualizado);
