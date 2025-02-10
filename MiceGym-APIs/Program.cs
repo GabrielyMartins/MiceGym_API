@@ -2,7 +2,7 @@ using MiceGym_APIs.DAO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicione os serviços necessários
+// Adicione os serviï¿½os necessï¿½rios
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -24,10 +24,10 @@ namespace MiceGym_APIs.Controllers
             return Ok(planos);
         }
 
-        [HttpGet("{codPlano}")]
-        public IActionResult GetById(int codPlano)
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
         {
-            var plano = _planoDAO.GetById(codPlano);
+            var plano = _planoDAO.GetById(id);
 
             if (plano == null)
             {
@@ -54,13 +54,13 @@ namespace MiceGym_APIs.Controllers
 
             _planoDAO.Insert(plano);
 
-            return CreatedAtAction(nameof(GetById), new { codPlano = plano.Id }, plano);
+            return CreatedAtAction(nameof(GetById), new { id = plano.Id }, plano);
         }
 
-        [HttpPut("{codPlano}")]
-        public IActionResult Put(int codPlano, [FromBody] PlanoDTO dto)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] PlanoDTO dto)
         {
-            var planoExistente = _planoDAO.GetById(codPlano);
+            var planoExistente = _planoDAO.GetById(id);
 
             if (planoExistente == null)
             {
@@ -76,17 +76,17 @@ namespace MiceGym_APIs.Controllers
             return Ok(planoExistente);
         }
 
-        [HttpDelete("{codPlano}")]
-        public IActionResult Delete(int codPlano)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            var plano = _planoDAO.GetById(codPlano);
+            var plano = _planoDAO.GetById(id);
 
             if (plano == null)
             {
                 return NotFound();
             }
 
-            _planoDAO.Delete(codPlano);
+            _planoDAO.Delete(id);
 
             return NoContent();
         }

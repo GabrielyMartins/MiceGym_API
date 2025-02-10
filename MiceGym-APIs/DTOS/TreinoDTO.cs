@@ -3,7 +3,6 @@
     public class TreinoDTO
     {
         public string Id { get; set; }
-        public string Data { get; set; }
         public string Frequencia { get; set; }
         public string Exercicios { get; set; }
         public string SeriesReps { get; set; }

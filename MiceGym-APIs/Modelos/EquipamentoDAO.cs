@@ -108,6 +108,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "UPDATE equipamentos SET nome_equi = @nome, descricao_equi = @descricao, quantidade_equi = @quantidade, valor_equi = @valor WHERE id_equi = @id";
                 query.Parameters.AddWithValue("@nome", equipamento.Nome);
@@ -127,6 +129,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "DELETE FROM equipamentos WHERE id_equi = @id";
                 query.Parameters.AddWithValue("@id", id);

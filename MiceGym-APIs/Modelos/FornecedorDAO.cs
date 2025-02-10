@@ -99,6 +99,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();  // A conexão será aberta automaticamente aqui
                 query.CommandText = @"INSERT INTO fornecedor 
             (nomefantasia_forn, razaosocial_forn, cnpj_forn, endereco_forn, cidade_forn, estado_forn, telefone_forn, email_forn, responsavel_forn)

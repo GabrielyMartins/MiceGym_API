@@ -30,7 +30,7 @@ namespace MiceGym_APIs.DAO
                     {
                         Id = reader.GetInt32("id_plano"),
                         NomePlano = reader.GetString("nome_plano"),
-                        Preco = reader.GetDecimal("preco_plano"),
+                        Preco = reader.GetDouble("preco_plano"),
                         Duracao = reader.GetInt32("duracao_plano")
                     });
                 }
@@ -46,13 +46,13 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public Plano? GetById(int codPlano)
+        public Plano? GetById(int id)
         {
             try
             {
                 var query = _conn.Query();
                 query.CommandText = "select * from plano where id_plano = @id";
-                query.Parameters.AddWithValue("@id", codPlano);
+                query.Parameters.AddWithValue("@id", id);
                 MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
@@ -61,7 +61,7 @@ namespace MiceGym_APIs.DAO
                     {
                         Id = reader.GetInt32("id_plano"),
                         NomePlano = reader.GetString("nome_plano"),
-                        Preco = reader.GetDecimal("preco_plano"),
+                        Preco = reader.GetDouble("preco_plano"),
                         Duracao = reader.GetInt32("duracao_plano")
                     };
                 }
@@ -83,7 +83,7 @@ namespace MiceGym_APIs.DAO
             {
                 var query = _conn.Query();
                 query.CommandText = "insert into plano (nome_plano, preco_plano, duracao_plano) " +
-                                    "VALUES (@nome_plano, @preco, @duracao)";
+                                    "VALUES (@nome_plano, @preco_plano, @duracao_plano)";
                 query.Parameters.AddWithValue("@nome_plano", plano.NomePlano);
                 query.Parameters.AddWithValue("@preco_plano", plano.Preco);
                 query.Parameters.AddWithValue("@duracao_plano", plano.Duracao);
@@ -103,18 +103,16 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "update plano set nome_plano = @nome_plano, preco_plano = @preco, duracao_plano = @duracao " +
-                                    "where id_plano = @cod_plano";
+                                    "where id_plano = @id_plano";
                 query.Parameters.AddWithValue("@nome_plano", plano.NomePlano);
                 query.Parameters.AddWithValue("@preco", plano.Preco);
                 query.Parameters.AddWithValue("@duracao", plano.Duracao);
                 query.Parameters.AddWithValue("@id", plano.Id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
@@ -122,18 +120,16 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public void Delete(int codPlano)
+        public void Delete(int id)
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "delete from plano where id_plano = @id";
-                query.Parameters.AddWithValue("@id", codPlano);
+                query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {

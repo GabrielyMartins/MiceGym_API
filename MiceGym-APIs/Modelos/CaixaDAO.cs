@@ -109,6 +109,7 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
                 var query = _conn.Query();
                 query.CommandText = "UPDATE caixa SET saldoinicial_cai = @saldo_inicial, dataabertura_cai = @data_abertura, " +
                                     "datafechamento_cai = @data_fechamento, saldofinal_cai = @saldo_final WHERE id_cai = @id";
@@ -134,10 +135,17 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
                 var query = _conn.Query();
                 query.CommandText = "DELETE FROM caixa WHERE id_cai = @id";
                 query.Parameters.AddWithValue("@id", id);
-                query.ExecuteNonQuery();
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    throw new Exception("O registro não foi excluído. Verifique e tente novamente");
+                }
             }
             catch (Exception)
             {

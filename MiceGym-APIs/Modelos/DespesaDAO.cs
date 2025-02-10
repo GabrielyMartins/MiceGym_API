@@ -103,6 +103,9 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "update despesa set valor_des = @valor, data_des = @data, descricao_des = @descricao " +
                                     "WHERE id_des = @id";
@@ -126,14 +129,12 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "delete from despesa where id_des = @id";
                 query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {

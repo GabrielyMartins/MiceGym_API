@@ -99,16 +99,14 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "update venda set data_ven = @data, valor_ven = @valor where id_ven = @id";
                 query.Parameters.AddWithValue("@data", venda.Data);
                 query.Parameters.AddWithValue("@valor", venda.Valor);
                 query.Parameters.AddWithValue("@id", venda.Id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
@@ -120,14 +118,12 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "delete from venda where id_ven = @id";
                 query.Parameters.AddWithValue("@id", id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {

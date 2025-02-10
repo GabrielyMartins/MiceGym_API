@@ -8,7 +8,7 @@ namespace MiceGym_APIs.Database
 
         private static readonly string host = "localhost";
 
-        private static readonly string port = "3306";
+        private static readonly string port = "3360";
 
         private static readonly string user = "root";
 
@@ -43,9 +43,24 @@ namespace MiceGym_APIs.Database
 
                 return command;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
+            }
+        }
+
+        public void Open()
+        {
+            try
+            {
+                if (connection != null)
+                {
+                    connection.Open();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

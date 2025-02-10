@@ -84,14 +84,25 @@ namespace MiceGym_APIs.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var caixa = _caixaDAO.GetById(id);
-            if (caixa == null)
+            try
             {
-                return NotFound();
+                var caixa = _caixaDAO.GetById(id);
+                if (caixa == null)
+                {
+                    return NotFound();
+                }
+
+                _caixaDAO.Delete(id);
+
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
             }
 
-            _caixaDAO.Delete(id);
+
             return NoContent();
+
         }
     }
 }

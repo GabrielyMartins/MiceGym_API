@@ -4,7 +4,7 @@ namespace MiceGym_APIs.Modelos
     {
         public int Id { get; set; }
         public string NomePlano { get; set; }
-        public decimal Preco { get; set; }
+        public double Preco { get; set; }
         public int Duracao { get; set; }
     }
 }
