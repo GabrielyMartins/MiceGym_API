@@ -2,7 +2,7 @@
 using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+
 
 namespace MiceGym_APIs.Controllers
 {
