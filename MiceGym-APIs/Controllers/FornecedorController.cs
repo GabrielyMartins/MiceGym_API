@@ -2,11 +2,8 @@
 using MiceGym_APIs.Modelos;
 using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Text.RegularExpressions;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
+
 
 namespace MiceGym_APIs.Controllers
 {

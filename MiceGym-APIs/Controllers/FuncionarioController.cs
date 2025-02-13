@@ -1,8 +1,6 @@
 ﻿using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
 
 namespace MiceGym_APIs.Controllers
 {
