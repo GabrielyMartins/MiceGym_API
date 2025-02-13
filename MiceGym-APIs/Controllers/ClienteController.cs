@@ -121,7 +121,24 @@ namespace MiceGym_APIs.Controllers
             return Ok("Cliente atualizado com sucesso.");
         }
 
-        [HttpDelete("{Id}")]
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var cliente = _dao.GetById(id);
+
+            if (cliente == null)
+            {
+                return NotFound();
+            }
+
+            _dao.Delete(id);
+
+            return NoContent();
+        }
+    }
+}
+/*
+ *   [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
             if (!_dao.Delete(Id))
@@ -129,5 +146,4 @@ namespace MiceGym_APIs.Controllers
 
             return Ok("Cliente excluído com sucesso.");
         }
-    }
-}
+*/

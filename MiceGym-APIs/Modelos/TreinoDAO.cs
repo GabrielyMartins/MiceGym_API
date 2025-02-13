@@ -44,7 +44,6 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-
         public List<Treino> List()
         {
             var treinos = new List<Treino>();
@@ -82,8 +81,6 @@ namespace MiceGym_APIs.DAO
 
             return treinos;
         }
-
-        
         public Treino GetById(int id)
         {
             try
@@ -121,7 +118,6 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-       
         public void Update(Treino treino)
         {
             try

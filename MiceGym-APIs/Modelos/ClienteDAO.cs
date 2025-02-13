@@ -3,6 +3,7 @@ using MiceGym_APIs.Database;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using Mysqlx.Crud;
 
 namespace MiceGym_APIs.DAO
 {
@@ -170,7 +171,28 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-        public bool Delete(int id)
+
+        public void Delete(int id)
+        {
+            try
+            {
+                _conn.Open();
+
+                var query = _conn.Query();
+                query.CommandText = "DELETE FROM cliente WHERE id_cli = @id";
+                query.Parameters.AddWithValue("@id", id);
+                query.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+    }
+}
+
+/*
+ *  public bool Delete(int id)
         {
             try
             {
@@ -192,6 +214,4 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-
-    }
-}
+*/

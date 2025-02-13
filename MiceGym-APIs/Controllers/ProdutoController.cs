@@ -1,4 +1,5 @@
-﻿using MiceGym_APIs.DTOS;
+﻿using MiceGym_APIs.DAO;
+using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,12 @@ namespace MiceGym_APIs.Controllers
     [ApiController]
     public class ProdutoController : Controller
     {
+        private readonly ProdutoDAO dao;
+        public ProdutoController()
+        {
+            dao = new ProdutoDAO();
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -30,7 +37,7 @@ namespace MiceGym_APIs.Controllers
 
             try
             {
-                var dao = new ProdutoDAO();
+                //var dao = new ProdutoDAO();
                 produto.Id = dao.Insert(produto);
             }
             catch (Exception ex)
@@ -64,9 +71,7 @@ namespace MiceGym_APIs.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ProdutoDTO item)
         {
-            try
-            {
-                var dao = new ProdutoDAO();
+                //var dao = new ProdutoDAO();
                 var produto = dao.GetById(id);
 
                 if (produto == null)
@@ -80,24 +85,16 @@ namespace MiceGym_APIs.Controllers
                 produto.PrecoCompra = item.PrecoCompra;
                 produto.PrecoVenda = item.PrecoVenda;
                 produto.Quantidade = item.Quantidade;
-               
 
                 dao.Update(produto);
 
                 return Ok(produto);
-            }
-            catch (Exception ex)
-            {
-                return Problem(ex.Message);
-            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try
-            {
-                var dao = new ProdutoDAO();
+                //var dao = new ProdutoDAO();
                 var produto = dao.GetById(id);
 
                 if (produto == null)
@@ -107,12 +104,7 @@ namespace MiceGym_APIs.Controllers
 
                 dao.Delete(produto.Id);
 
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return Problem("Ocorreram erros ao processar a solicitação");
-            }
+                return NoContent();
         }
     }
 }

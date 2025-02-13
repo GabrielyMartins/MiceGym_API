@@ -125,8 +125,8 @@ namespace MiceGym_APIs.Modelos
 
                 var query = _conn.Query();
                 query.CommandText = "update produto set nome_pro = @nome, descricao_pro = @descricao, codigo_pro = @codigo, " +
-                                    "precocompra_pro = @preco_compra, precovenda_pro = @preco_venda, quantidade_pro = @quantidade" +
-                                    "WHERE id = @id";
+                                    "precocompra_pro = @preco_compra, precovenda_pro = @preco_venda, quantidade_pro = @quantidade";
+                //"WHERE id = @id"
 
                 query.Parameters.AddWithValue("@nome", item.Nome);
                 query.Parameters.AddWithValue("@descricao", item.Descricao);
@@ -134,16 +134,10 @@ namespace MiceGym_APIs.Modelos
                 query.Parameters.AddWithValue("@preco_compra", item.PrecoCompra);
                 query.Parameters.AddWithValue("@preco_venda", item.PrecoVenda);
                 query.Parameters.AddWithValue("@quantidade", item.Quantidade);
-                query.Parameters.AddWithValue("@id", item.Id);
+                //query.Parameters.AddWithValue("@id", item.Id);
 
-                var result = query.ExecuteNonQuery();
-
-                if (result == 0)
-                {
-                    throw new Exception("O registro não foi atualizado. Verifique e tente novamente");
-                }
+                query.ExecuteNonQuery();
             }
-            
             finally
             {
                 _conn.Close();
@@ -157,21 +151,32 @@ namespace MiceGym_APIs.Modelos
                 _conn.Open();
 
                 var query = _conn.Query();
-                query.CommandText = "delete from produtos where id_pro = @id";
+                query.CommandText = "delete from produto where id_pro = @id";
                 query.Parameters.AddWithValue("@id", id);
-
-                var result = query.ExecuteNonQuery();
-
-                if (result == 0)
-                {
-                    throw new Exception("O registro não foi excluído. Verifique e tente novamente");
-                }
+                query.ExecuteNonQuery();
             }
-            
             finally
             {
                 _conn.Close();
             }
         }
+
+        /*public void Delete(int id)
+        {
+            try
+            {
+                _conn.Open();
+
+                var query = _conn.Query();
+                query.CommandText = "delete from produtos where id_pro = @id";
+                query.Parameters.AddWithValue("@id", id);
+                query.ExecuteNonQuery();
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+        */
     }
 }
