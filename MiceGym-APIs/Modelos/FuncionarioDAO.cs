@@ -90,19 +90,20 @@ namespace MiceGym_APIs.Modelos
             }
         }
 
-        public Funcionario? GetByCPF(string cpf)
+        public Funcionario? GetById(int Id)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "select * from funcionario where cpf_fun = @cpf";
-                query.Parameters.AddWithValue("@cpf", cpf);
+                query.CommandText = "select * from funcionario where id_fun = @id";
+                query.Parameters.AddWithValue("@id", Id);
                 MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
                 {
                     return new Funcionario
                     {
+                        Id = reader.GetInt32("id"),
                         Nome = reader.GetString("nome_fun"),
                         CPF = reader.GetString("cpf_fun"),
                         RG = reader.GetString("rg_fun"),
@@ -163,13 +164,13 @@ namespace MiceGym_APIs.Modelos
             }
         }
 
-        public void Delete(string cpf)
+        public void Delete(int Id)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "delete from funcionario where cpf_fun = @cpf";
-                query.Parameters.AddWithValue("@cpf", cpf);
+                query.CommandText = "delete from funcionario where id_fun = @id";
+                query.Parameters.AddWithValue("@id", Id);
                 query.ExecuteNonQuery();
             }
             catch (Exception)

@@ -6,20 +6,20 @@ namespace MiceGym_APIs.Modelos
 {
     public class ProdutoDAO
     {
-        private static ConnectionMysql conn;
+        private static ConnectionMysql _conn;
 
         public ProdutoDAO()
         {
-            conn = new ConnectionMysql();
+            _conn = new ConnectionMysql();
         }
 
         public int Insert(Produto item)
         {
             try
             {
-                var query = conn.Query();
-                query.CommandText = "insert into produto (nome_pro, descricao_pro, codigo_pro, precocompra_pro, precovenda_pro, quantidade_pro, fornecedor_pro) " +
-                                    "VALUES (@nome, @descricao, @codigo, @preco_compra, @preco_venda, @quantidade, @fornecedor)";
+                var query = _conn.Query();
+                query.CommandText = "insert into produto (nome_pro, descricao_pro, codigo_pro, precocompra_pro, precovenda_pro, quantidade_pro) " +
+                                    "VALUES (@nome, @descricao, @codigo, @preco_compra, @preco_venda, @quantidade)";
 
                 query.Parameters.AddWithValue("@nome", item.Nome);
                 query.Parameters.AddWithValue("@descricao", item.Descricao);
@@ -27,8 +27,7 @@ namespace MiceGym_APIs.Modelos
                 query.Parameters.AddWithValue("@preco_compra", item.PrecoCompra);
                 query.Parameters.AddWithValue("@preco_venda", item.PrecoVenda);
                 query.Parameters.AddWithValue("@quantidade", item.Quantidade);
-                query.Parameters.AddWithValue("@fornecedor", item.Fornecedor);
-
+                
                 var result = query.ExecuteNonQuery();
 
                 if (result == 0)
@@ -38,13 +37,10 @@ namespace MiceGym_APIs.Modelos
 
                 return (int)query.LastInsertedId;
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
         }
 
@@ -54,7 +50,7 @@ namespace MiceGym_APIs.Modelos
             {
                 List<Produto> list = new List<Produto>();
 
-                var query = conn.Query();
+                var query = _conn.Query();
                 query.CommandText = "select * from produto";
 
                 MySqlDataReader reader = query.ExecuteReader();
@@ -69,20 +65,17 @@ namespace MiceGym_APIs.Modelos
                         Codigo = reader.GetString("codigo_pro"),
                         PrecoCompra = reader.GetDouble("precocompra_pro"),
                         PrecoVenda = reader.GetDouble("precovenda_pro"),
-                        Quantidade = reader.GetString("quantidade_pro"),
-                        Fornecedor = reader.GetString("fornecedor_pro")
+                        Quantidade = reader.GetDouble("quantidade_pro"),
+                        
                     });
                 }
 
                 return list;
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
         }
 
@@ -92,7 +85,7 @@ namespace MiceGym_APIs.Modelos
             {
                 Produto produto = new Produto();
 
-                var query = conn.Query();
+                var query = _conn.Query();
                 query.CommandText = "select * from produto where id_pro = @id";
                 query.Parameters.AddWithValue("@id", id);
 
@@ -111,19 +104,16 @@ namespace MiceGym_APIs.Modelos
                     produto.Codigo = reader.GetString("codigo_pro");
                     produto.PrecoCompra = reader.GetDouble("precocompra_pro");
                     produto.PrecoVenda = reader.GetDouble("precovenda_pro");
-                    produto.Quantidade = reader.GetString("quantidade_pro");
-                    produto.Fornecedor = reader.GetString("fornecedor_pro");
+                    produto.Quantidade = reader.GetDouble("quantidade_pro");
+                    
                 }
 
                 return produto;
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
         }
 
@@ -131,9 +121,11 @@ namespace MiceGym_APIs.Modelos
         {
             try
             {
-                var query = conn.Query();
+                _conn.Open();
+
+                var query = _conn.Query();
                 query.CommandText = "update produto set nome_pro = @nome, descricao_pro = @descricao, codigo_pro = @codigo, " +
-                                    "precocompra_pro = @preco_compra, precovenda_pro = @preco_venda, quantidade_pro = @quantidade, fornecedor_pro = @fornecedor " +
+                                    "precocompra_pro = @preco_compra, precovenda_pro = @preco_venda, quantidade_pro = @quantidade" +
                                     "WHERE id = @id";
 
                 query.Parameters.AddWithValue("@nome", item.Nome);
@@ -142,7 +134,6 @@ namespace MiceGym_APIs.Modelos
                 query.Parameters.AddWithValue("@preco_compra", item.PrecoCompra);
                 query.Parameters.AddWithValue("@preco_venda", item.PrecoVenda);
                 query.Parameters.AddWithValue("@quantidade", item.Quantidade);
-                query.Parameters.AddWithValue("@fornecedor", item.Fornecedor);
                 query.Parameters.AddWithValue("@id", item.Id);
 
                 var result = query.ExecuteNonQuery();
@@ -152,13 +143,10 @@ namespace MiceGym_APIs.Modelos
                     throw new Exception("O registro não foi atualizado. Verifique e tente novamente");
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
         }
 
@@ -166,7 +154,9 @@ namespace MiceGym_APIs.Modelos
         {
             try
             {
-                var query = conn.Query();
+                _conn.Open();
+
+                var query = _conn.Query();
                 query.CommandText = "delete from produtos where id_pro = @id";
                 query.Parameters.AddWithValue("@id", id);
 
@@ -177,13 +167,10 @@ namespace MiceGym_APIs.Modelos
                     throw new Exception("O registro não foi excluído. Verifique e tente novamente");
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
-                conn.Close();
+                _conn.Close();
             }
         }
     }

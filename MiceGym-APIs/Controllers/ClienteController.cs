@@ -40,10 +40,10 @@ namespace MiceGym_APIs.Controllers
             return Ok(clienteDTOs);
         }
 
-        [HttpGet("{cpf}")]
-        public IActionResult GetByCPF(string cpf)
+        [HttpGet("{Id}")]
+        public IActionResult GetById(int Id)
         {
-            var cliente = _dao.GetByCPF(cpf);
+            var cliente = _dao.GetById(Id);
             if (cliente == null)
                 return NotFound("Cliente não encontrado.");
 
@@ -67,12 +67,12 @@ namespace MiceGym_APIs.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ClienteDTO dto)
+        public IActionResult Post(ClienteDTO dto)
         {
             if (dto == null)
                 return BadRequest("Dados inválidos. Verifique novamente!");
 
-            if (_dao.GetByCPF(dto.CPF) != null)
+            if (_dao.GetById(dto.Id) != null)
                 return Conflict("Cliente já cadastrado.");
 
             var cliente = new Cliente
@@ -91,14 +91,14 @@ namespace MiceGym_APIs.Controllers
                 Email = dto.Email
             };
 
-            var cpfCriado = _dao.Insert(cliente);
-            return CreatedAtAction(nameof(GetByCPF), new { cpf = cpfCriado }, dto);
+            var IdCriado = _dao.Insert(cliente);
+            return CreatedAtAction(nameof(GetById), new { id = IdCriado }, dto);
         }
 
-        [HttpPut("{cpf}")]
-        public IActionResult Update(string cpf, ClienteDTO dto)
+        [HttpPut("{Id}")]
+        public IActionResult Update(int Id, ClienteDTO dto)
         {
-            var cliente = _dao.GetByCPF(cpf);
+            var cliente = _dao.GetById(Id);
             if (cliente == null)
                 return NotFound("Cliente não encontrado.");
 
@@ -121,10 +121,10 @@ namespace MiceGym_APIs.Controllers
             return Ok("Cliente atualizado com sucesso.");
         }
 
-        [HttpDelete("{cpf}")]
-        public IActionResult Delete(string cpf)
+        [HttpDelete("{Id}")]
+        public IActionResult Delete(int Id)
         {
-            if (!_dao.Delete(cpf))
+            if (!_dao.Delete(Id))
                 return NotFound("Cliente não encontrado.");
 
             return Ok("Cliente excluído com sucesso.");

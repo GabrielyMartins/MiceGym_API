@@ -14,7 +14,7 @@
 
         public double PrecoVenda { get; set; }
 
-        public string Quantidade { get; set; }
+        public double Quantidade { get; set; }
 
         public string Fornecedor { get; set; }
 

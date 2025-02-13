@@ -25,8 +25,7 @@ namespace MiceGym_APIs.Controllers
                 Codigo = item.Codigo,
                 PrecoCompra = item.PrecoCompra,
                 PrecoVenda = item.PrecoVenda,
-                Quantidade = item.Quantidade,
-                Fornecedor = item.Fornecedor
+                Quantidade = item.Quantidade
             };
 
             try
@@ -81,7 +80,7 @@ namespace MiceGym_APIs.Controllers
                 produto.PrecoCompra = item.PrecoCompra;
                 produto.PrecoVenda = item.PrecoVenda;
                 produto.Quantidade = item.Quantidade;
-                produto.Fornecedor = item.Fornecedor;
+               
 
                 dao.Update(produto);
 

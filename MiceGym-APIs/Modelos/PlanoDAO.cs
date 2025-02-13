@@ -106,12 +106,10 @@ namespace MiceGym_APIs.DAO
                 _conn.Open();
 
                 var query = _conn.Query();
-                query.CommandText = "update plano set nome_plano = @nome_plano, preco_plano = @preco, duracao_plano = @duracao " +
-                                    "where id_plano = @id_plano";
+                query.CommandText = "update plano set nome_plano = @nome_plano, preco_plano = @preco, duracao_plano = @duracao ";
                 query.Parameters.AddWithValue("@nome_plano", plano.NomePlano);
                 query.Parameters.AddWithValue("@preco", plano.Preco);
                 query.Parameters.AddWithValue("@duracao", plano.Duracao);
-                query.Parameters.AddWithValue("@id", plano.Id);
                 query.ExecuteNonQuery();
             }
             finally

@@ -28,24 +28,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(fornecedores);
         }
 
-        [HttpGet("{cnpj}")]
-        public IActionResult GetByCNPJ(string cnpj)
-        {
-            if (!ValidarCNPJ(cnpj))
-            {
-                return BadRequest("CNPJ inválido.");
-            }
-
-            var fornecedor = _fornecedorDAO.GetByCNPJ(cnpj);
-
-            if (fornecedor == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(fornecedor);
-        }
-
+        
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO dto)
         {
@@ -54,23 +37,11 @@ namespace MiceGym_APIs.Controllers
                 return BadRequest("Dados inválidos.");
             }
 
-            var cnpj = dto.CNPJ;
-            if (!ValidarCNPJ(cnpj))
-            {
-                return BadRequest("CNPJ inválido.");
-            }
-
-            var fornecedores = _fornecedorDAO.List();
-            if (fornecedores.Any(f => f.CNPJ == cnpj))
-            {
-                return Conflict("Fornecedor existente.");
-            }
-
-            var fornecedor = new Fornecedor
+            var fornecedores = new Fornecedor
             {
                 NomeFantasia = dto.NomeFantasia,
                 RazaoSocial = dto.RazaoSocial,
-                CNPJ = cnpj,
+                CNPJ = dto.CNPJ,
                 Endereco = dto.Endereco,
                 Cidade = dto.Cidade,
                 Estado = dto.Estado,
@@ -79,20 +50,31 @@ namespace MiceGym_APIs.Controllers
                 Responsavel = dto.Responsavel
             };
 
-            _fornecedorDAO.Insert(fornecedor);
 
-            return CreatedAtAction(nameof(GetByCNPJ), new { cnpj = fornecedor.CNPJ }, fornecedor);
+            _fornecedorDAO.Insert(fornecedores);
+
+            return CreatedAtAction(nameof(GetById), new { id = fornecedores.Id }, fornecedores);
         }
 
-        [HttpPut("{cnpj}")]
-        public IActionResult Put(string cnpj, [FromBody] FornecedorDTO dto)
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
         {
-            if (!ValidarCNPJ(cnpj))
+
+            var fornecedor = _fornecedorDAO.GetById(id);
+
+            if (fornecedor == null)
             {
-                return BadRequest("CNPJ inválido.");
+                return NotFound();
             }
 
-            var fornecedorExistente = _fornecedorDAO.GetByCNPJ(cnpj);
+            return Ok(fornecedor);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] FornecedorDTO dto)
+        {
+            var fornecedorExistente = _fornecedorDAO.GetById(id);
 
             if (fornecedorExistente == null)
             {
@@ -100,7 +82,8 @@ namespace MiceGym_APIs.Controllers
             }
 
             fornecedorExistente.NomeFantasia = dto.NomeFantasia ?? fornecedorExistente.NomeFantasia;
-            fornecedorExistente.RazaoSocial = dto.RazaoSocial ?? fornecedorExistente.RazaoSocial;
+            fornecedorExistente.RazaoSocial = dto.RazaoSocial  ?? fornecedorExistente.RazaoSocial;
+            fornecedorExistente.CNPJ = dto.CNPJ ?? fornecedorExistente.CNPJ;
             fornecedorExistente.Endereco = dto.Endereco ?? fornecedorExistente.Endereco;
             fornecedorExistente.Cidade = dto.Cidade ?? fornecedorExistente.Cidade;
             fornecedorExistente.Estado = dto.Estado ?? fornecedorExistente.Estado;
@@ -108,71 +91,31 @@ namespace MiceGym_APIs.Controllers
             fornecedorExistente.Email = dto.Email ?? fornecedorExistente.Email;
             fornecedorExistente.Responsavel = dto.Responsavel ?? fornecedorExistente.Responsavel;
 
+
+
+
+
+
+
             _fornecedorDAO.Update(fornecedorExistente);
 
             return Ok(fornecedorExistente);
         }
 
-        [HttpDelete("{cnpj}")]
-        public IActionResult Delete(string cnpj)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            if (!ValidarCNPJ(cnpj))
-            {
-                return BadRequest("CNPJ inválido.");
-            }
-
-            var fornecedor = _fornecedorDAO.GetByCNPJ(cnpj);
+            var fornecedor = _fornecedorDAO.GetById(id);
 
             if (fornecedor == null)
             {
                 return NotFound();
             }
 
-            _fornecedorDAO.Delete(cnpj);
+            _fornecedorDAO.Delete(id);
 
-            return Ok(fornecedor);
+            return NoContent();
         }
 
-        private bool ValidarCNPJ(string cnpj)
-        {
-            cnpj = Regex.Replace(cnpj, @"[^\d]", ""); 
-
-            if (cnpj.Length != 14)
-                return false;
-
-            int[] multiplicador1 = new int[12] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = new int[13] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-            string tempCnpj, digito;
-            int soma, resto;
-
-            tempCnpj = cnpj.Substring(0, 12);
-            soma = 0;
-
-            for (int i = 0; i < 12; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador1[i];
-
-            resto = (soma % 11);
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-
-            digito = resto.ToString();
-            tempCnpj += digito;
-            soma = 0;
-
-            for (int i = 0; i < 13; i++)
-                soma += int.Parse(tempCnpj[i].ToString()) * multiplicador2[i];
-
-            resto = (soma % 11);
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
-
-            digito += resto.ToString();
-
-            return cnpj.EndsWith(digito);
-        }
     }
 }

@@ -24,19 +24,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(planos);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            var plano = _planoDAO.GetById(id);
-
-            if (plano == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(plano);
-        }
-
+       
         [HttpPost]
         public IActionResult Post([FromBody] PlanoDTO dto)
         {
@@ -55,6 +43,20 @@ namespace MiceGym_APIs.Controllers
             _planoDAO.Insert(plano);
 
             return CreatedAtAction(nameof(GetById), new { id = plano.Id }, plano);
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var plano = _planoDAO.GetById(id);
+
+            if (plano == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(plano);
         }
 
         [HttpPut("{id}")]

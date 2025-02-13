@@ -29,6 +29,8 @@ namespace MiceGym_APIs.DAO
                     {
                         fornecedores.Add(new Fornecedor
                         {
+
+                            Id = reader.GetInt32("id_forn"),
                             NomeFantasia = reader.GetString("nomefantasia_forn"),
                             RazaoSocial = reader.GetString("razaosocial_forn"),
                             CNPJ = reader.GetString("cnpj_forn"),
@@ -59,19 +61,20 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-        public Fornecedor? GetByCNPJ(string cnpj)
+        public Fornecedor? GetById(int Id)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "select * from fornecedor where cnpj_forn = @cnpj";
-                query.Parameters.AddWithValue("@cnpj", cnpj);
+                query.CommandText = "select * from fornecedor where id_forn = @id";
+                query.Parameters.AddWithValue("id", Id);
                 MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
                 {
                     return new Fornecedor
                     {
+                        Id = reader.GetInt32("id_forn"),
                         NomeFantasia = reader.GetString("nomefantasia_forn"),
                         RazaoSocial = reader.GetString("razaosocial_forn"),
                         CNPJ = reader.GetString("cnpj_forn"),
@@ -99,9 +102,9 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
-                _conn.Open();
+                
 
-                var query = _conn.Query();  // A conexão será aberta automaticamente aqui
+                var query = _conn.Query();  
                 query.CommandText = @"INSERT INTO fornecedor 
             (nomefantasia_forn, razaosocial_forn, cnpj_forn, endereco_forn, cidade_forn, estado_forn, telefone_forn, email_forn, responsavel_forn)
             VALUES (@nomeFantasia, @razaoSocial, @cnpj, @endereco, @cidade, @estado, @telefone, @email, @responsavel)";
@@ -116,7 +119,7 @@ namespace MiceGym_APIs.DAO
                 query.Parameters.AddWithValue("@email", fornecedor.Email);
                 query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
 
-                query.ExecuteNonQuery();  // Executa o comando
+                query.ExecuteNonQuery(); 
             }
             catch (MySqlException ex)
             {
@@ -130,7 +133,7 @@ namespace MiceGym_APIs.DAO
             }
             finally
             {
-                _conn.Close();  // Fecha a conexão após a execução
+                _conn.Close();  
             }
         }
 
@@ -138,10 +141,12 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "update fornecedor set nomefantasia_forn = @nomeFantasia, razaosocial_forn = @razaoSocial, endereco_forn = @endereco, " +
                                     "cidade_forn = @cidade, estado_forn = @estado, telefone_forn = @telefone, email_forn = @email, responsavel_forn = @responsavel " +
-                                    "WHERE cnpj_forn = @cnpj"; 
+                                    "WHERE id_forn = @id"; 
                 query.Parameters.AddWithValue("@nomeFantasia", fornecedor.NomeFantasia);
                 query.Parameters.AddWithValue("@razaoSocial", fornecedor.RazaoSocial);
                 query.Parameters.AddWithValue("@endereco", fornecedor.Endereco);
@@ -150,38 +155,28 @@ namespace MiceGym_APIs.DAO
                 query.Parameters.AddWithValue("@telefone", fornecedor.Telefone);
                 query.Parameters.AddWithValue("@email", fornecedor.Email);
                 query.Parameters.AddWithValue("@responsavel", fornecedor.Responsavel);
-                query.Parameters.AddWithValue("@cnpj", fornecedor.CNPJ);
+                query.Parameters.AddWithValue("@id", fornecedor.Id);
                 query.ExecuteNonQuery();
             }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Erro no banco de dados: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro desconhecido: {ex.Message}");
-                throw;
-            }
+            
             finally
             {
                 _conn.Close();
             }
         }
 
-        public void Delete(string cnpj)
+        public void Delete(int Id)
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
-                query.CommandText = "delete from fornecedor where cnpj_forn = @cnpj";
-                query.Parameters.AddWithValue("@cnpj", cnpj);
+                query.CommandText = "delete from fornecedor where id_forn = @id";
+                query.Parameters.AddWithValue("@id", Id);
                 query.ExecuteNonQuery();
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            
             finally
             {
                 _conn.Close();

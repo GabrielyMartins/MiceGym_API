@@ -87,7 +87,7 @@ create table produto (
     codigo_pro varchar(100),
     precocompra_pro decimal,
     precovenda_pro decimal,
-    quantidade_pro decimal,
+    quantidade_pro decimal
     fk_fornecedor int,
     foreign key (fk_fornecedor) references fornecedor(id_forn)
 );
@@ -155,8 +155,8 @@ create table treino (
 create table plano (
     id_plano int primary key auto_increment,
     nome_plano varchar(100),
-    duraçao_plano text,
-    preco_plano decimal(10, 2)
+    duracao_plano varchar(100),
+    preco_plano double
 );
 
 alter table treino add fk_plano int, add foreign key (fk_plano) references plano(id_plano);

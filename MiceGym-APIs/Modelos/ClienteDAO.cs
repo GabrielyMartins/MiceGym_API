@@ -19,7 +19,9 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
-                using (var query = _conn.Query())  // 'using' garante o fechamento adequado
+                _conn.Open();
+
+                using (var query = _conn.Query())  
                 {
                     query.CommandText = "INSERT INTO cliente (nome_cli, datanascimento_cli, rg_cli, cpf_cli, sexo_cli, email_cli, telefone_cli, uf_cli, cidade_cli, bairro_cli, numero_cli, cep_cli) " +
                                         "VALUES (@nome, @data_nascimento, @rg, @cpf, @sexo, @email, @telefone, @uf, @cidade, @bairro, @numero, @cep)";
@@ -89,13 +91,13 @@ namespace MiceGym_APIs.DAO
             return clientes;
         }
 
-        public Cliente? GetByCPF(string cpf)
+        public Cliente? GetById(int id)
         {
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "SELECT * FROM cliente WHERE cpf_cli = @cpf";
-                query.Parameters.AddWithValue("@cpf", cpf);
+                query.CommandText = "SELECT * FROM cliente WHERE id_cli = @id";
+                query.Parameters.AddWithValue("@id", id);
 
                 MySqlDataReader reader = query.ExecuteReader();
 
@@ -136,6 +138,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "UPDATE cliente SET nome_cli = @nome, datanascimento_cli = @data_nascimento, rg_cli = @rg, sexo_cli = @sexo, " +
                                     "email_cli = @email, telefone_cli = @telefone, uf_cli = @uf, cidade_cli = @cidade, bairro_cli = @bairro, numero_cli = @numero, cep_cli = @cep " +
@@ -166,13 +170,15 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-        public bool Delete(string cpf)
+        public bool Delete(int id)
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM cliente WHERE cpf_cli = @cpf";
-                query.Parameters.AddWithValue("@cpf", cpf);
+                query.CommandText = "DELETE FROM cliente WHERE id_cli = @id";
+                query.Parameters.AddWithValue("@id", id);
 
                 int rowsAffected = query.ExecuteNonQuery();
                 return rowsAffected > 0;

@@ -42,10 +42,10 @@ namespace MiceGym_APIs.Controllers
             return Ok(funcionarioDTOs);
         }
 
-        [HttpGet("{cpf}")]
-        public IActionResult GetByCPF(string cpf)
+        [HttpGet("{Id}")]
+        public IActionResult GetById(int Id)
         {
-            var funcionario = _dao.GetByCPF(cpf);
+            var funcionario = _dao.GetById(Id);
             if (funcionario == null)
                 return NotFound("Funcionário não encontrado.");
 
@@ -76,7 +76,7 @@ namespace MiceGym_APIs.Controllers
             if (dto == null)
                 return BadRequest("Dados inválidos. Verifique novamente!");
 
-            if (_dao.GetByCPF(dto.CPF) != null)
+            if (_dao.GetById(dto.Id) != null)
                 return Conflict("Funcionário já cadastrado.");
 
             var funcionario = new Funcionario
@@ -97,14 +97,14 @@ namespace MiceGym_APIs.Controllers
        
             };
 
-            var cpfCriado = _dao.Insert(funcionario);
-            return CreatedAtAction(nameof(GetByCPF), new { cpf = cpfCriado }, dto);
+            var IdCriado = _dao.Insert(funcionario);
+            return CreatedAtAction(nameof(GetById), new { Id = IdCriado }, dto);
         }
 
-        [HttpPut("{cpf}")]
-        public IActionResult Update(string cpf, FuncionarioDTO dto)
+        [HttpPut("{Id}")]
+        public IActionResult Update(int Id, FuncionarioDTO dto)
         {
-            var funcionario = _dao.GetByCPF(cpf);
+            var funcionario = _dao.GetById(Id);
             if (funcionario == null)
                 return NotFound("Funcionário não encontrado.");
 
@@ -126,14 +126,14 @@ namespace MiceGym_APIs.Controllers
             return Ok(dto);
         }
 
-        [HttpDelete("{cpf}")]
-        public IActionResult Delete(string cpf)
+        [HttpDelete("{Id}")]
+        public IActionResult Delete(int Id)
         {
-            var funcionario = _dao.GetByCPF(cpf);
+            var funcionario = _dao.GetById(Id);
             if (funcionario == null)
                 return NotFound("Funcionário não encontrado.");
 
-            _dao.Delete(cpf);
+            _dao.Delete(Id);
             return Ok("Funcionário excluído com sucesso.");
         }
     }

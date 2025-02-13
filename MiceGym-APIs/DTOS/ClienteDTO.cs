@@ -2,6 +2,7 @@
 {
     public class ClienteDTO
     {
+        public int Id { get; set; }
         public string Nome { get; set; }
         public DateTime DataNascimento { get; set; }
         public string RG { get; set; }
