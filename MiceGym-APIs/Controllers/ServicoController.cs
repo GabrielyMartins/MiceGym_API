@@ -2,8 +2,8 @@
 using MiceGym_APIs.Modelos;
 using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq.Expressions;
-
+using System;
+using System.Collections.Generic;
 
 namespace MiceGym_APIs.Controllers
 {
@@ -13,8 +13,6 @@ namespace MiceGym_APIs.Controllers
     {
         private readonly ServicoDAO _servicoDAO;
 
-
-
         public ServicoController(ServicoDAO servicoDAO)
         {
             _servicoDAO = servicoDAO;
@@ -23,11 +21,9 @@ namespace MiceGym_APIs.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var caixas = _servicoDAO.List();
-            return Ok(caixas);
+            var servicos = _servicoDAO.List();
+            return Ok(servicos);
         }
-
-
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -37,10 +33,8 @@ namespace MiceGym_APIs.Controllers
             {
                 return NotFound();
             }
-
             return Ok(servico);
         }
-
 
         [HttpPost]
         public IActionResult Post([FromBody] ServicoDTO servicoDTO)
@@ -58,6 +52,7 @@ namespace MiceGym_APIs.Controllers
             };
 
             var novoId = _servicoDAO.Insert(servico);
+            servico.Id = novoId;
             return CreatedAtAction(nameof(Get), new { id = servico.Id }, servico);
         }
 
@@ -74,40 +69,26 @@ namespace MiceGym_APIs.Controllers
             {
                 return NotFound();
             }
-            var servicoAtualizado = new Servico
-            {
-                Id = servico.Id,
-                Nome = servicoDTO.Nome,
-                Descricao = servicoDTO.Descricao,
-                Preco = servicoDTO.Preco,
-            };
 
-            _servicoDAO.Update(servicoAtualizado);
-            return Ok(servicoAtualizado);
+            servico.Nome = servicoDTO.Nome;
+            servico.Descricao = servicoDTO.Descricao;
+            servico.Preco = servicoDTO.Preco;
+
+            _servicoDAO.Update(servico);
+            return Ok(servico);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            try
+            var servico = _servicoDAO.GetById(id);
+            if (servico == null)
             {
-                var servico = _servicoDAO.GetById(id);
-                if (servico == null)
-                {
-                    return NotFound();
-                }
-
-                _servicoDAO.Delete(id);
+                return NotFound();
             }
-            catch (Exception ex)
-            {
 
-                return Problem(ex.Message);
-
-            }
+            _servicoDAO.Delete(id);
             return NoContent();
         }
     }
 }
-
-

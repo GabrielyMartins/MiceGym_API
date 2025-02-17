@@ -3,8 +3,6 @@ using MiceGym_APIs.Modelos;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace MiceGym_APIs.DAO
 {
@@ -22,11 +20,11 @@ namespace MiceGym_APIs.DAO
             try
             {
                 var query = _conn.Query();
-                query.CommandText = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preco)";
+                query.CommandText = "INSERT INTO servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preco)";
                 query.Parameters.AddWithValue("@Descricao", servico.Descricao);
                 query.Parameters.AddWithValue("@Nome", servico.Nome);
                 query.Parameters.AddWithValue("@Preco", servico.Preco);
-
+                query.ExecuteNonQuery();
                 return (int)query.LastInsertedId;
             }
             catch (Exception)
@@ -57,8 +55,8 @@ namespace MiceGym_APIs.DAO
                         Nome = reader.GetString("nome_ser"),
                         Preco = reader.GetDouble("preco_ser")
                     });
-                    return lista;
                 }
+                return lista;
             }
             catch (Exception)
             {
@@ -69,7 +67,6 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-
 
         public Servico? GetById(int id)
         {
@@ -102,17 +99,17 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-
-       public void Update(Servico servico)
+        public void Update(Servico servico)
         {
             try
             {
-                _conn.Open();
                 var query = _conn.Query();
-                query.CommandText = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preco)";
+                query.CommandText = "UPDATE servico SET descricao_ser = @Descricao, nome_ser = @Nome, preco_ser = @Preco WHERE id_ser = @Id";
                 query.Parameters.AddWithValue("@Descricao", servico.Descricao);
                 query.Parameters.AddWithValue("@Nome", servico.Nome);
                 query.Parameters.AddWithValue("@Preco", servico.Preco);
+                query.Parameters.AddWithValue("@Id", servico.Id);
+                query.ExecuteNonQuery();
             }
             catch (Exception)
             {
@@ -124,20 +121,14 @@ namespace MiceGym_APIs.DAO
             }
         }
 
-
-        
-
         public void Delete(int id)
         {
             try
             {
-                _conn.Open();
                 var query = _conn.Query();
-                query.CommandText = "DELETE FROM serivo WHERE id_ser = @id";
+                query.CommandText = "DELETE FROM servico WHERE id_ser = @id";
                 query.Parameters.AddWithValue("@id", id);
-
                 var result = query.ExecuteNonQuery();
-
                 if (result == 0)
                 {
                     throw new Exception("O registro não foi excluído. Verifique e tente novamente");
@@ -152,9 +143,5 @@ namespace MiceGym_APIs.DAO
                 _conn.Close();
             }
         }
-
-
-
     }
 }
-
