@@ -1,4 +1,5 @@
-﻿using MiceGym_APIs.DTOS;
+﻿using MiceGym_APIs.DAO;
+using MiceGym_APIs.DTOS;
 using MiceGym_APIs.Modelos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,131 +9,109 @@ namespace MiceGym_APIs.Controllers
     [ApiController]
     public class FuncionarioController : ControllerBase
     {
-        private readonly FuncionarioDAO _dao;
+        private readonly FuncionarioDAO _funcionarioDao;
 
         public FuncionarioController()
         {
-            _dao = new FuncionarioDAO();
+            _funcionarioDao = new FuncionarioDAO();
         }
 
         [HttpGet]
         public IActionResult List()
         {
-            var funcionarios = _dao.List();
-            var funcionarioDTOs = funcionarios.Select(f => new FuncionarioDTO
-            {
-                Nome = f.Nome,
-                CPF = f.CPF,
-                CTPS = f.CTPS,
-                RG = f.RG,
-                Funcao = f.Funcao,
-                Setor = f.Setor,
-                Sala = f.Sala,
-                Telefone = f.Telefone,
-                UF = f.UF,
-                Cidade = f.Cidade,
-                Bairro = f.Bairro,
-                Numero = f.Numero,
-                CEP = f.CEP
-                
-            }).ToList();
-
-            return Ok(funcionarioDTOs);
+            var funcionarios = _funcionarioDao.List();
+            return Ok(funcionarios);
         }
 
         [HttpGet("{Id}")]
         public IActionResult GetById(int Id)
         {
-            var funcionario = _dao.GetById(Id);
+            var funcionario = _funcionarioDao.GetById(Id);
             if (funcionario == null)
-                return NotFound("Funcionário não encontrado.");
-
-            var funcionarioDTO = new FuncionarioDTO
             {
-                Nome = funcionario.Nome,
-                CPF = funcionario.CPF,
-                CTPS = funcionario.CTPS,
-                RG = funcionario.RG,
-                Funcao = funcionario.Funcao,
-                Setor = funcionario.Setor,
-                Sala = funcionario.Sala,
-                Telefone = funcionario.Telefone,
-                UF = funcionario.UF,
-                    Cidade = funcionario.Cidade,
-                    Bairro = funcionario.Bairro,
-                    Numero = funcionario.Numero,
-                    CEP = funcionario.CEP
-                
-            };
-
-            return Ok(funcionarioDTO);
+                return NotFound("Funcionário não encontrado.");
+            }
+            return Ok(funcionario);
         }
 
         [HttpPost]
-        public IActionResult Create(FuncionarioDTO dto)
+        public IActionResult Create(FuncionarioDTO funcionarioDTO)
         {
-            if (dto == null)
+            if (funcionarioDTO == null)
+            {
                 return BadRequest("Dados inválidos. Verifique novamente!");
-
-            if (_dao.GetById(dto.Id) != null)
-                return Conflict("Funcionário já cadastrado.");
+            }
+                
 
             var funcionario = new Funcionario
             {
-                Nome = dto.Nome,
-                CPF = dto.CPF,
-                CTPS = dto.CTPS,
-                RG = dto.RG,
-                Funcao = dto.Funcao,
-                Setor = dto.Setor,
-                Sala = dto.Sala,
-                Telefone = dto.Telefone,
-                    UF = dto.Endereco.UF,
-                    Cidade = dto.Endereco.Cidade,
-                    Bairro = dto.Endereco.Bairro,
-                    Numero = dto.Endereco.Numero,
-                    CEP = dto.Endereco.CEP
-       
+                Nome = funcionarioDTO.Nome,
+                CPF = funcionarioDTO.CPF,
+                CTPS = funcionarioDTO.CTPS,
+                RG = funcionarioDTO.RG,
+                Funcao = funcionarioDTO.Funcao,
+                Setor = funcionarioDTO.Setor,
+                Sala = funcionarioDTO.Sala,
+                Telefone = funcionarioDTO.Telefone,
             };
 
-            var IdCriado = _dao.Insert(funcionario);
-            return CreatedAtAction(nameof(GetById), new { Id = IdCriado }, dto);
+            var IdCriado = _funcionarioDao.Insert(funcionario);
+            return CreatedAtAction(nameof(GetById), new { Id = IdCriado }, funcionarioDTO);
         }
 
         [HttpPut("{Id}")]
-        public IActionResult Update(int Id, FuncionarioDTO dto)
+        public IActionResult Update(int Id, FuncionarioDTO funcionarioDTO)
         {
-            var funcionario = _dao.GetById(Id);
-            if (funcionario == null)
-                return NotFound("Funcionário não encontrado.");
+            
+            if (funcionarioDTO == null)
+            {
+                return BadRequest("Funcionario não encontrado");
+            }
 
-            funcionario.Nome = dto.Nome ?? funcionario.Nome;
-            funcionario.CTPS = dto.CTPS ?? funcionario.CTPS;
-            funcionario.RG = dto.RG ?? funcionario.RG;
-            funcionario.Funcao = dto.Funcao ?? funcionario.Funcao;
-            funcionario.Setor = dto.Setor ?? funcionario.Setor;
-            funcionario.Sala = dto.Sala ?? funcionario.Sala;
-            funcionario.Telefone = dto.Telefone ?? funcionario.Telefone;
-            funcionario.UF = dto.Endereco.UF ?? funcionario.UF;
-            funcionario.Cidade = dto.Endereco.Cidade ?? funcionario.Cidade;
-            funcionario.Bairro = dto.Endereco.Bairro ?? funcionario.Bairro;
-            funcionario.Numero = dto.Endereco.Numero ?? funcionario.Numero;
-            funcionario.CEP = dto.Endereco.CEP ?? funcionario.CEP;
+            var funcionario = _funcionarioDao.GetById(Id);
+            if(funcionario == null)
+            {
+                return NotFound();
+            }
 
-            _dao.Update(funcionario);
+            
+            var funcionarioAtualizado = new Funcionario
+            {
+                Id = Id,
+                Nome = funcionarioDTO.Nome,
+                CTPS = funcionarioDTO.CTPS,
+                RG = funcionarioDTO.RG,
+                Funcao = funcionarioDTO.Funcao,
+                Setor = funcionarioDTO.Setor,
+                Sala = funcionarioDTO.Sala,
+                Telefone = funcionarioDTO.Telefone,
+            };
 
-            return Ok(dto);
+            _funcionarioDao.Update(funcionario);
+            return Ok(funcionarioAtualizado);
         }
 
         [HttpDelete("{Id}")]
         public IActionResult Delete(int Id)
         {
-            var funcionario = _dao.GetById(Id);
-            if (funcionario == null)
-                return NotFound("Funcionário não encontrado.");
+            try
+            {
+                var caixa = _funcionarioDao.GetById(Id);
+                if (caixa == null)
+                {
+                    return NotFound();
+                }
 
-            _dao.Delete(Id);
-            return Ok("Funcionário excluído com sucesso.");
+                _funcionarioDao.Delete(Id);
+
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+
+
+            return NoContent();
         }
     }
 }

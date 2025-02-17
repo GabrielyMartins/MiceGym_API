@@ -1,4 +1,5 @@
-﻿using MiceGym_APIs.Modelos;
+﻿using MiceGym_APIs.Database;
+using MiceGym_APIs.Modelos;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -9,148 +10,151 @@ namespace MiceGym_APIs.DAO
 {
     public class ServicoDAO
     {
-        private string _connectionString;
+        private readonly ConnectionMysql _conn;
 
-        public ServicoDAO(string connectionString)
+        public ServicoDAO()
         {
-            _connectionString = connectionString;
+            _conn = new ConnectionMysql();
         }
 
-
-        public List<Servico> ListarServicos()
+        public int Insert(Servico servico)
         {
-            List<Servico> servicos = new List<Servico>();
-
-            using (var connection = new MySqlConnection(_connectionString))
+            try
             {
-                string query = "select * from servico";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                connection.Open();
-                MySqlDataReader reader = command.ExecuteReader();
+                var query = _conn.Query();
+                query.CommandText = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preco)";
+                query.Parameters.AddWithValue("@Descricao", servico.Descricao);
+                query.Parameters.AddWithValue("@Nome", servico.Nome);
+                query.Parameters.AddWithValue("@Preco", servico.Preco);
+
+                return (int)query.LastInsertedId;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
+
+        public List<Servico> List()
+        {
+            List<Servico> lista = new List<Servico>();
+            try
+            {
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM servico";
+                MySqlDataReader reader = query.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    servicos.Add(new Servico
+                    lista.Add(new Servico
                     {
                         Id = reader.GetInt32("id_ser"),
                         Descricao = reader.GetString("descricao_ser"),
                         Nome = reader.GetString("nome_ser"),
-                        preco = reader.GetDecimal("preco_ser")
+                        Preco = reader.GetDouble("preco_ser")
                     });
+                    return lista;
                 }
             }
-
-            return servicos;
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
 
 
-        public Servico BuscarPorId(int id)
+        public Servico? GetById(int id)
         {
-            Servico servico = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
+            try
             {
-                string query = "select * from servico where id_ser = @Id";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
-                connection.Open();
-                MySqlDataReader reader = command.ExecuteReader();
+                var query = _conn.Query();
+                query.CommandText = "SELECT * FROM servico WHERE id_ser = @id";
+                query.Parameters.AddWithValue("@id", id);
+                MySqlDataReader reader = query.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    servico = new Servico
+                    return new Servico
                     {
                         Id = reader.GetInt32("id_ser"),
                         Descricao = reader.GetString("descricao_ser"),
                         Nome = reader.GetString("nome_ser"),
-                        preco = reader.GetDecimal("preco_ser")
-
+                        Preco = reader.GetDouble("preco_ser")
                     };
                 }
+                return null;
             }
-
-            return servico;
-        }
-
-
-        public Servico AdicionarServico(Servico servico)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
+            catch (Exception)
             {
-                string query = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preço)";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Descricao", servico.Descricao);
-                command.Parameters.AddWithValue("@Nome", servico.Nome);
-                command.Parameters.AddWithValue("@Preço", servico.preco);
-
-                connection.Open();
-
-                command.ExecuteNonQuery();
+                throw;
             }
-
-            return BuscarPorNome(servico.Nome); 
-        }
-
-
-        public bool AtualizarServico(int id, Servico servico)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
+            finally
             {
-                string query = "update servico set descricao_ser = @Descricao, nome_ser = @Nome WHERE id_ser = @Id";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
-                command.Parameters.AddWithValue("@Descricao", servico.Descricao);
-                command.Parameters.AddWithValue("@Nome", servico.Nome);
-                command.Parameters.AddWithValue("@Preço", servico.preco);
-
-                connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-                return rowsAffected > 0; 
-            }
-        }
-
-        public bool DeletarServico(int id)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                string query = "delete from servico where id_ser = @Id";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
-                connection.Open();
-
-                int rowsAffected = command.ExecuteNonQuery();
-                return rowsAffected > 0;  
+                _conn.Close();
             }
         }
 
 
-        private Servico BuscarPorNome(string nome)
+       public void Update(Servico servico)
         {
-            Servico servico = null;
-
-            using (var connection = new MySqlConnection(_connectionString))
+            try
             {
-                string query = "select * from servico where nome_ser = @Nome";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Nome", nome);
-                connection.Open();
-                MySqlDataReader reader = command.ExecuteReader();
+                _conn.Open();
+                var query = _conn.Query();
+                query.CommandText = "insert into servico (descricao_ser, nome_ser, preco_ser) VALUES (@Descricao, @Nome, @Preco)";
+                query.Parameters.AddWithValue("@Descricao", servico.Descricao);
+                query.Parameters.AddWithValue("@Nome", servico.Nome);
+                query.Parameters.AddWithValue("@Preco", servico.Preco);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
+        }
 
-                if (reader.Read())
+
+        
+
+        public void Delete(int id)
+        {
+            try
+            {
+                _conn.Open();
+                var query = _conn.Query();
+                query.CommandText = "DELETE FROM serivo WHERE id_ser = @id";
+                query.Parameters.AddWithValue("@id", id);
+
+                var result = query.ExecuteNonQuery();
+
+                if (result == 0)
                 {
-                    servico = new Servico
-                    {
-                        Id = reader.GetInt32("id_ser"),
-                        Descricao = reader.GetString("descricao_ser"),
-                        Nome = reader.GetString("nome_ser"),
-                        preco = reader.GetDecimal("preco_ser")
-
-                    };
+                    throw new Exception("O registro não foi excluído. Verifique e tente novamente");
                 }
             }
-
-            return servico;
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                _conn.Close();
+            }
         }
+
+
+
     }
 }
+
