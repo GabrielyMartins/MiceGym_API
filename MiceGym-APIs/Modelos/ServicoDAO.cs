@@ -103,6 +103,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "UPDATE servico SET descricao_ser = @Descricao, nome_ser = @Nome, preco_ser = @Preco WHERE id_ser = @Id";
                 query.Parameters.AddWithValue("@Descricao", servico.Descricao);
@@ -110,10 +112,6 @@ namespace MiceGym_APIs.DAO
                 query.Parameters.AddWithValue("@Preco", servico.Preco);
                 query.Parameters.AddWithValue("@Id", servico.Id);
                 query.ExecuteNonQuery();
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
@@ -125,6 +123,8 @@ namespace MiceGym_APIs.DAO
         {
             try
             {
+                _conn.Open();
+
                 var query = _conn.Query();
                 query.CommandText = "DELETE FROM servico WHERE id_ser = @id";
                 query.Parameters.AddWithValue("@id", id);
@@ -133,10 +133,6 @@ namespace MiceGym_APIs.DAO
                 {
                     throw new Exception("O registro não foi excluído. Verifique e tente novamente");
                 }
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {

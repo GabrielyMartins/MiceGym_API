@@ -2,20 +2,25 @@
 using MiceGym_APIs.Modelos;
 using MiceGym_APIs.DAO;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace MiceGym_APIs.Controllers
 {
+    /*
+ public ServicoController(ServicoDAO servicoDAO)
+ {
+     _servicoDAO = servicoDAO;
+ }
+ */
     [Route("api/[controller]")]
     [ApiController]
     public class ServicoController : ControllerBase
     {
         private readonly ServicoDAO _servicoDAO;
 
-        public ServicoController(ServicoDAO servicoDAO)
+
+        public ServicoController()
         {
-            _servicoDAO = servicoDAO;
+            _servicoDAO = new ServicoDAO();
         }
 
         [HttpGet]
@@ -23,17 +28,6 @@ namespace MiceGym_APIs.Controllers
         {
             var servicos = _servicoDAO.List();
             return Ok(servicos);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            var servico = _servicoDAO.GetById(id);
-            if (servico == null)
-            {
-                return NotFound();
-            }
-            return Ok(servico);
         }
 
         [HttpPost]
@@ -51,37 +45,53 @@ namespace MiceGym_APIs.Controllers
                 Preco = servicoDTO.Preco,
             };
 
-            var novoId = _servicoDAO.Insert(servico);
-            servico.Id = novoId;
-            return CreatedAtAction(nameof(Get), new { id = servico.Id }, servico);
+            _servicoDAO.Insert(servico);
+
+            return CreatedAtAction(nameof(GetById), new { id = servico.Id }, servico);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var servico = _servicoDAO.GetById(id);
+
+            if (servico == null)
+            {
+                return NotFound();
+            }
+            return Ok(servico);
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ServicoDTO servicoDTO)
         {
-            if (servicoDTO == null)
-            {
-                return BadRequest("Dados inválidos.");
-            }
+            var servicoExistente = _servicoDAO.GetById(id);
 
+            if (servicoExistente == null)
+            {
+                return NotFound();
+            }
+            /*
             var servico = _servicoDAO.GetById(id);
             if (servico == null)
             {
                 return NotFound();
             }
+            */
 
-            servico.Nome = servicoDTO.Nome;
-            servico.Descricao = servicoDTO.Descricao;
-            servico.Preco = servicoDTO.Preco;
+            servicoExistente.Nome = servicoDTO.Nome;
+            servicoExistente.Descricao = servicoDTO.Descricao;
+            servicoExistente.Preco = servicoDTO.Preco;
 
-            _servicoDAO.Update(servico);
-            return Ok(servico);
+            _servicoDAO.Update(servicoExistente);
+            return Ok(servicoExistente);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var servico = _servicoDAO.GetById(id);
+
             if (servico == null)
             {
                 return NotFound();
