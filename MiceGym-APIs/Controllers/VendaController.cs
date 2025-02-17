@@ -7,11 +7,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VendaController : ControllerBase
+    public class vendaController : ControllerBase
     {
         private readonly VendaDAO _vendaDAO;
 
-        public VendaController()
+        public vendaController()
         {
             _vendaDAO = new VendaDAO();
         }

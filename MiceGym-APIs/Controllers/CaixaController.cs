@@ -7,11 +7,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CaixaController : ControllerBase
+    public class caixaController : ControllerBase
     {
         private readonly CaixaDAO _caixaDAO;
 
-        public CaixaController(CaixaDAO caixaDAO)
+        public caixaController(CaixaDAO caixaDAO)
         {
             _caixaDAO = caixaDAO;
         }

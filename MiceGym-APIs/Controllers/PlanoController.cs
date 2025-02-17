@@ -7,11 +7,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlanoController : ControllerBase
+    public class planoController : ControllerBase
     {
         private readonly PlanoDAO _planoDAO;
 
-        public PlanoController()
+        public planoController()
         {
             _planoDAO = new PlanoDAO();
         }

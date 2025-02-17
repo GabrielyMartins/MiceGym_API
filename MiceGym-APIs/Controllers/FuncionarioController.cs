@@ -7,11 +7,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FuncionarioController : ControllerBase
+    public class funcionarioController : ControllerBase
     {
         private readonly FuncionarioDAO _funcionarioDao;
 
-        public FuncionarioController()
+        public funcionarioController()
         {
             _funcionarioDao = new FuncionarioDAO();
         }

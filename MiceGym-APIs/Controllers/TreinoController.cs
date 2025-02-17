@@ -6,17 +6,17 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TreinoController : ControllerBase
+    public class treinoController : ControllerBase
     {
         private readonly TreinoDAO _treinoDAO;
 
-        public TreinoController()
+        public treinoController()
         {
             _treinoDAO = new TreinoDAO();
         }
 
        
-        [HttpGet("Listar")]
+        [HttpGet]
         public IActionResult Get()
         {
             List<Treino> treinos = _treinoDAO.List();
@@ -24,7 +24,7 @@ namespace MiceGym_APIs.Controllers
         }
 
         
-        [HttpGet("Procurar/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var treinoItem = _treinoDAO.GetById(id);
@@ -37,7 +37,7 @@ namespace MiceGym_APIs.Controllers
             return Ok(treinoItem);
         }
 
-        [HttpPost("Adicionar")]
+        [HttpPost]
         public IActionResult Post([FromBody] Treino item)
         {
             if (item == null)
@@ -50,7 +50,7 @@ namespace MiceGym_APIs.Controllers
         }
 
         
-        [HttpPut("Atualizar/{id}")]
+        [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Treino item)
         {
             var treinoItem = _treinoDAO.GetById(id);
@@ -67,7 +67,7 @@ namespace MiceGym_APIs.Controllers
         }
 
       
-        [HttpDelete("Deletar/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             var treinoItem = _treinoDAO.GetById(id);

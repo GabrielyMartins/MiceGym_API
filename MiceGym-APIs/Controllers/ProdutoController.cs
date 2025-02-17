@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MiceGym_APIs.Controllers
 {
-    [Route("produtos")]
+    [Route("api/[controller]")]
+    
     [ApiController]
-    public class ProdutoController : Controller
+    public class produtoController : Controller
     {
         private readonly ProdutoDAO dao;
-        public ProdutoController()
+        public produtoController()
         {
             dao = new ProdutoDAO();
         }

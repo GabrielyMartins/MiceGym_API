@@ -9,11 +9,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FornecedorController : ControllerBase
+    public class fornecedorController : ControllerBase
     {
         private readonly FornecedorDAO _fornecedorDAO;
 
-        public FornecedorController()
+        public fornecedorController()
         {
             _fornecedorDAO = new FornecedorDAO();
         }

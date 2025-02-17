@@ -8,11 +8,11 @@ namespace MiceGym_APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EquipamentoController : ControllerBase
+    public class equipamentoController : ControllerBase
     {
         private readonly EquipamentoDAO _equipamentoDAO;
 
-        public EquipamentoController(EquipamentoDAO equipamentoDAO)
+        public equipamentoController(EquipamentoDAO equipamentoDAO)
         {
             _equipamentoDAO = equipamentoDAO;
         }

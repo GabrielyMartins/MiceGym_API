@@ -13,12 +13,12 @@ namespace MiceGym_APIs.Controllers
  */
     [Route("api/[controller]")]
     [ApiController]
-    public class ServicoController : ControllerBase
+    public class servicoController : ControllerBase
     {
         private readonly ServicoDAO _servicoDAO;
 
 
-        public ServicoController()
+        public servicoController()
         {
             _servicoDAO = new ServicoDAO();
         }
